@@ -1,0 +1,7 @@
+{
+  "name": "TORs",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
