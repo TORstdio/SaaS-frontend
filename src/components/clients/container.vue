@@ -54,7 +54,7 @@ export default defineComponent({
   data() {
     return {
       showColumn:'one',
-      selected_client:{id:0},
+      selected_client:{id:null},
       selected_phase: 'Todo'
     };
   },
