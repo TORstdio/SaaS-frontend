@@ -5,7 +5,7 @@
         <ion-toolbar color="black">
           <div class="logo">
               <ion-img style="margin:10px 20px; width:90px;" src="Logo.png" ></ion-img>
-              <span style="font-size:12px; position:absolute; margin-left:120px; margin-top:-21px;">v1.0.0</span>
+              <span style="font-size:12px; position:absolute; margin-left:120px; margin-top:-21px;">v1.0.1</span>
           </div>
         </ion-toolbar>
       </ion-header>
