@@ -3,7 +3,7 @@
     <ion-grid style="padding:0px;">
       <ion-row>
         <Transition name="fade">
-        <ion-col :size="device>=768 ? 3 : 12" v-if="device>=768 || (device<768 && showColumn=='one')" class="columnOne" style="min-height:calc(100vh - 56px)!important;">
+        <ion-col :size="device>=768 ? '3' : '12'" v-if="device>=768 || (device<768 && showColumn=='one')" class="columnOne" style="min-height:calc(100vh - 56px)!important;">
           <ion-list  style="background: transparent; margin-top:10px;">
             <ion-item v-for="(client, index) in clients" :key="index" @click="selectClient(client)" style="padding:5px 0px 5px 0px; border-bottom:solid 1px;" class="border-color" color="none" lines="none">
               <ion-icon style="margin-right:10px; font-size:12px;" :icon="person"></ion-icon>
@@ -14,7 +14,7 @@
         </ion-col>
         </Transition>
         <Transition name="fade">
-        <ion-col :size="device>=768 ? 9 : 12" v-if="device>=768 || (device<768 && showColumn=='two')" class="columnTwo border-color" style="min-height:calc(100vh - 56px)!important; border-left:1px solid;">
+        <ion-col :size="device>=768 ? '9' : '12'" v-if="device>=768 || (device<768 && showColumn=='two')" class="columnTwo border-color" style="min-height:calc(100vh - 56px)!important; border-left:1px solid;">
           <div style="margin-bottom:10px;">
             <ion-buttons slot="start">
               <ion-button class="hide-desktop" @click="showColumn='one'">
