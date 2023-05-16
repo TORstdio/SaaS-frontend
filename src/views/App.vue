@@ -11,7 +11,7 @@
       </ion-header>
       <ion-content class="menu-bg">
         <ion-list style="background: transparent; margin-top:10px;">
-          <ion-item color="none" lines="none" v-for="(option, index) in menuOptions" :key="index" @click="selectOption(option)" style="padding:0px 10px; margin-top:10px;">
+          <ion-item color="none" lines="none" v-for="(option, index) in menuOptions" :key="index" :router-link="`/${option.route}`" style="padding:0px 10px; margin-top:10px;">
             <ion-icon  :icon="option.icon" slot="start"></ion-icon>
             <ion-label style="font-size:14px;">{{ option.label }}</ion-label>
           </ion-item>
@@ -67,10 +67,10 @@ export default defineComponent({
   data() {
     return {
       menuOptions: [
-        { label: 'Dashboard', icon: gridOutline },
-        { label: 'Clientes', icon: peopleOutline },
-        { label: 'Calendario', icon: calendarOutline },
-        { label: 'Ventas', icon: cashOutline },
+        { label: 'Dashboard', icon: gridOutline, route: '' },
+        { label: 'Clientes', icon: peopleOutline, route: 'clients' },
+        { label: 'Calendario', icon: calendarOutline, route: 'calendar' },
+        { label: 'Ventas', icon: cashOutline, route: 'sales' },
       ],
       show_split_pane: 'md' as string | boolean,
       divWidth: 'width:calc(100vw - 250px);',
@@ -95,10 +95,6 @@ export default defineComponent({
     },
   },
   methods: {
-    selectOption(option) {
-      // Aquí puedes manejar la lógica para cada opción del menú seleccionada
-      console.log('Opción seleccionada:', option.label);
-    },
     closeOpenMenu() {
       if (!this.show_split_pane) {
         this.menuWidth = 'width:250px;'

@@ -1,21 +1,27 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import Clients from '../components/clients/container.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/home'
+    component: () => import('../components/dashboard.vue')
   },
   {
     path: '/clients',
-    name: 'Clients',
-    component: Clients
+    component: () => import('../components/clients/container.vue')
+  },
+  {
+    path: '/calendar',
+    component: () => import('../components/calendar/container.vue')
+  },
+  {
+    path: '/sales',
+    component: () => import('../components/sales/container.vue')
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),//import.meta.env.BASE_URL
   routes
 })
 
