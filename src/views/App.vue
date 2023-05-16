@@ -54,12 +54,12 @@
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonSearchbar, IonRouterOutlet } from '@ionic/vue';
+import { IonContent, IonHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonSearchbar, IonRouterOutlet, IonAvatar, IonChip } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import { menu, power, calendarOutline, cashOutline, peopleOutline, gridOutline } from 'ionicons/icons';
 
 export default defineComponent({
-  components: { IonContent, IonHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonSearchbar, IonRouterOutlet,  },
+  components: { IonContent, IonHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonSearchbar, IonRouterOutlet, IonAvatar, IonChip  },
   setup() {
     const device = window.innerWidth
     return { menu, calendarOutline, power, device, cashOutline, peopleOutline, gridOutline };
