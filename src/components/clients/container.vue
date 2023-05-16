@@ -15,9 +15,9 @@
         </Transition>
         <Transition name="fade">
         <ion-col :size="device>=768 ? '9' : '12'" v-if="device>=768 || (device<768 && showColumn=='two')" class="columnTwo border-color" style="min-height:calc(100vh - 56px)!important; border-left:1px solid;">
-          <div style="margin-bottom:10px;">
+          <div style="margin-bottom:10px;" class="hide-desktop">
             <ion-buttons slot="start">
-              <ion-button class="hide-desktop" @click="showColumn='one'">
+              <ion-button @click="showColumn='one'">
                 <ion-icon style="font-size:20px;" slot="icon-only" :icon="arrowBack"></ion-icon>
               </ion-button>
             </ion-buttons>
@@ -76,6 +76,11 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+@media (min-width: 768px) {
+  .hide-desktop {
+    display: none;
+  }
+}
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity 0.5s;
