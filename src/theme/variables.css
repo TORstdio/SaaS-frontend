@@ -75,13 +75,85 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 }
+.logo {
+  filter: brightness(3) invert(1);
+}
+.login-text{
+  color:black!important;
+}
+.custom-social-button{
+  background-color: white!important;
+  color: #1e1e1e!important;
+  --box-shadow: none;
+}
+.login-container{
+  background-color: #f5f6f7;
+}
+.menu-bg{
+  --ion-background-color:#f5f6f7!important;
+  background-color:#f5f6f7!important;
+}
+.header-bg{
+  --ion-background-color: white;
+  --background: white;
+}
+.columnOne{
+  background: white;
+}
+.columnTwo{
+  background: #f5f6f7;
+}
+.border-color{
+  border-color:#dedede!important;
+}
+ion-searchbar {
+  --background: #f5f6f7!important;
+}
+
 
 @media (prefers-color-scheme: dark) {
+  ion-searchbar {
+  --background: #1d1e1f!important;
+}
+  .border-color{
+    border-color:black!important;
+  }
+  .columnTwo{
+    background: #1d1e1f;
+  }
+  .columnOne{
+    background: #151617;
+  }
+  .header-bg{
+    --ion-background-color: #151617;
+    --background: #151617;
+  }
+  .header-bg .toolbar-background{
+    background-color: red!important;
+  }
+  .menu-bg{
+    --ion-background-color:#1d1e1f!important;
+    background-color:#1d1e1f!important;
+    
+  }
+  .login-container{
+    background-color: #151617;
+  }
+  .logo {
+    filter: none;
+  }
+  .login-text{
+    color:#bdbdbd!important;
+  }
+  .custom-social-button{
+    background-color: #1e1e1e!important;
+    color: white!important;
+    --box-shadow: none;
+  }
   /*
    * Dark Colors
    * -------------------------------------------
    */
-
   body {
     --ion-color-primary: #428cff;
     --ion-color-primary-rgb: 66,140,255;
