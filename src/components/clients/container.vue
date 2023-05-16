@@ -11,7 +11,7 @@
           </ion-segment>
           <div class="scroll-container" style="height: calc(100vh - 56px) !important; overflow-y: auto;">
             <ion-list  style="background: transparent; padding-top:0px;">
-              <ion-item v-for="(client, index) in clients" :key="index" @click="selectClient(client)" :style="client.id==selected_client.id ? 'background:#26549c!important; transition: background-color .03s; border-radius: 6px;':''" style="padding:5px 0px 5px 0px; border-bottom:solid 1px;" class="border-color menu-element" color="none" lines="none">
+              <ion-item v-for="(client, index) in clients" :key="index" @click="selectClient(client)" :style="client.id==selected_client.id ? 'background:#26549c!important; transition: background-color .03s; border-radius: 6px;':''" style="padding:5px 0px 5px 0px; border-bottom:solid 1px; margin:0px 10px;" class="border-color menu-element" color="none" lines="none">
                 <ion-icon style="margin-right:10px; font-size:12px;" :icon="person"></ion-icon>
                 <ion-label>{{client.name}}</ion-label>
               </ion-item>
@@ -54,7 +54,7 @@ export default defineComponent({
   data() {
     return {
       showColumn:'one',
-      selected_client:{},
+      selected_client:{id:0},
       selected_phase: 'Todo'
     };
   },
