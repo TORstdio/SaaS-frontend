@@ -3,5 +3,25 @@
   "integrations": {
     "capacitor": {}
   },
-  "type": "vue-vite"
+  "type": "vue-vite",
+
+
+  "pwa": {
+    "iconPath": "/icon.png",
+    "manifest": {
+      "name": "clienTOR",
+      "short_name": "clienTOR",
+      "start_url": "/",
+      "display": "standalone",
+      "background_color": "black",
+      "theme_color": "black",
+      "icons": [
+        {
+          "src": "/icon.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ]
+    }
+  }
 }

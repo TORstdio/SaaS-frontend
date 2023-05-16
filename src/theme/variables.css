@@ -109,9 +109,17 @@ http://ionicframework.com/docs/theming/ */
 ion-searchbar {
   --background: #f5f6f7!important;
 }
+.menu-element:hover, .menu-item-selected{
+  background:#e5e6e7;
+  border-radius: 6px;
+}
 
 
 @media (prefers-color-scheme: dark) {
+  .menu-element:hover, .menu-item-selected{
+    background:#2d2d2d;
+    border-radius: 6px;
+  }
   ion-searchbar {
   --background: #1d1e1f!important;
 }

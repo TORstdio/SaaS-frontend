@@ -11,8 +11,8 @@
       </ion-header>
       <ion-content class="menu-bg">
         <ion-list style="background: transparent; margin-top:10px;">
-          <ion-item color="none" lines="none" v-for="(option, index) in menuOptions" :key="index" :router-link="`/${option.route}`" style="padding:0px 10px; margin-top:10px;">
-            <ion-icon  :icon="option.icon" slot="start"></ion-icon>
+          <ion-item color="none" lines="none" v-for="(option, index) in menuOptions" :key="index" :router-link="`/${option.route}`" class="menu-element" :class="{ 'menu-item-selected': $route.path === `/${option.route}` }">
+            <ion-icon style="margin-right:15px;" :icon="option.icon" slot="start"></ion-icon>
             <ion-label style="font-size:14px;">{{ option.label }}</ion-label>
           </ion-item>
         </ion-list>
@@ -36,7 +36,7 @@
 
             <ion-searchbar class="search-bar" style="padding:0px!important;" placeholder="Buscar..."></ion-searchbar>
 
-            <ion-chip style="margin-right:10px;">
+            <ion-chip style="margin-right:10px;" router-link="/account">
               <ion-avatar>
                 <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
               </ion-avatar>
@@ -148,5 +148,15 @@ ion-searchbar {
   flex: 1;
   margin: 0 10px;
   --border-radius: 6px !important;
+}
+.menu-element{
+  margin:10px 20px 0px 20px; 
+}
+
+</style>
+<style>
+.menu-element:hover{
+  cursor: pointer;
+  opacity: 0.9;
 }
 </style>
