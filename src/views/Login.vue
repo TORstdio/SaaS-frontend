@@ -45,11 +45,14 @@
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonImg } from '@ionic/vue';
+import { IonContent, IonImg, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem } from '@ionic/vue';
 import { logoGoogle, logoApple } from 'ionicons/icons';
 import { defineComponent } from 'vue';
 export default defineComponent({
-  components: { }
+  components: { IonContent, IonImg, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem},
+  setup(){
+    return { logoGoogle, logoApple }
+  }
 })
 
 </script>

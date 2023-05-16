@@ -56,7 +56,7 @@
 <script lang="ts">
 import { IonContent, IonHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonSearchbar, IonRouterOutlet } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import { menu, settingsOutline, power, calendarOutline, cashOutline, peopleOutline, gridOutline } from 'ionicons/icons';
+import { menu, power, calendarOutline, cashOutline, peopleOutline, gridOutline } from 'ionicons/icons';
 
 export default defineComponent({
   components: { IonContent, IonHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonSearchbar, IonRouterOutlet,  },
