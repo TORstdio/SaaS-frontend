@@ -11,9 +11,15 @@
           </ion-segment>
           <div class="scroll-container" style="height: calc(100vh - 56px) !important; overflow-y: auto;">
             <ion-list  style="background: transparent; padding-top:0px;">
-              <ion-item v-for="(client, index) in clients" :key="index" @click="selectClient(client)" :style="client.id==selected_client.id ? 'background:#26549c!important; transition: background-color .03s; border-radius: 6px;':''" style="padding:5px 0px 5px 0px; border-bottom:solid 1px; margin:0px 10px;" class="border-color menu-element" color="none" lines="none">
+              
+              <ion-item @click="isModalOpen=true" style="padding:5px 0px 5px 0px; cursor: pointer;" class="add-client-button" color="none" lines="none">
+                <ion-icon style="margin-right:10px; font-size:12px;" :icon="addOutline"></ion-icon>
+                <ion-label>Agregar Cliente</ion-label>
+              </ion-item>
+
+              <ion-item v-for="(client, index) in clientsList" :key="index" @click="selectClient(client)" :style="client.id==selected_client.id ? 'background:#26549c!important; transition: background-color .03s; border-radius: 6px;':''" style="padding:5px 0px 5px 0px; border-bottom:solid 1px; margin:0px 10px;" class="border-color menu-element" color="none" lines="none">
                 <ion-icon style="margin-right:10px; font-size:12px;" :icon="person"></ion-icon>
-                <ion-label>{{client.name}}</ion-label>
+                <ion-label>{{client.legal_name}}</ion-label>
               </ion-item>
             </ion-list>
           </div>
@@ -30,35 +36,189 @@
             </ion-buttons>
           </div>
 
-          {{selected_client}}
+          <div v-if="selected_client.id!=0">
+
+          </div>
+          <div else style="background-image:url('/icon.svg'); height:calc(100vh - 56px)!important; background-repeat:no-repeat; background-position: center;" class="logo">
+
+          </div>
           <!-- Contenido de la segunda columna -->
         </ion-col>
         </Transition>
       </ion-row>
     </ion-grid>
+    <ion-modal :is-open="isModalOpen" @didDismiss="isModalOpen = false">
+      <ion-content>
+        <ion-toolbar class="toolbar-space columnTwo" style="position:fixed;" color="transparent">
+            <ion-buttons slot="start" style="padding-left:5px;">
+              <ion-button @click="isModalOpen = false">
+                  <ion-icon :icon="arrowBack"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+            <ion-buttons slot="end" style="padding-right:15px;">
+              <ion-button expand="block" style="text-transform: capitalize; --box-shadow: none;" @click="save()">Guardar</ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+
+        <ion-list style="margin-top:50px; padding:20px; background:transparent;">
+          
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text">Nombre</ion-label>
+            <ion-input type="text" v-model.trim="client.legal_name"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text">Email</ion-label>
+            <ion-input type="text" v-model.trim="client.email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text">Teléfono</ion-label>
+            <ion-input type="text" v-model.trim="client.phone"></ion-input>
+          </ion-item>
+
+        </ion-list>
+
+        <div @click="showFiscal=!showFiscal" style="text-align:center; font-size:12px; font-weight:500; cursor: pointer;">
+          <div style="margin-bottom:5px;">Datos Fiscales</div>
+          <ion-icon v-if="!showFiscal" :icon="chevronDownOutline"></ion-icon>
+          <ion-icon v-else :icon="chevronUpOutline"></ion-icon>
+        </div>
+
+        <ion-list v-if="showFiscal" style="padding:20px; background:transparent;">
+
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text">Razon Social</ion-label>
+            <ion-input type="text" v-model.trim="client.legal_name"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text">RFC</ion-label>
+            <ion-input type="text" v-model.trim="client.tax_id"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text">Régimen Fiscal</ion-label>
+            <ion-select v-model.trim="client.tax_system">
+              <ion-select-option v-for="(system, index) in tax_systems" :key="index" :value="system.id">{{system.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text">C.P.</ion-label>
+            <ion-input type="text" v-model.trim="client.zip"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text">Calle</ion-label>
+            <ion-input type="text" v-model.trim="client.street"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text"># Exterior</ion-label>
+            <ion-input type="text" v-model.trim="client.exterior"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text"># Interior</ion-label>
+            <ion-input type="text" v-model.trim="client.interior"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text">Colonia</ion-label>
+            <ion-input type="text" v-model.trim="client.neighborhood"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text">Ciudad</ion-label>
+            <ion-input type="text" v-model.trim="client.city"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text">Monicipio</ion-label>
+            <ion-input type="text" v-model.trim="client.municipality"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text">Estado</ion-label>
+            <ion-input type="text" v-model.trim="client.state"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating" style="font-size:14px;" class="login-text">País</ion-label>
+            <ion-input type="text" v-model.trim="client.country"></ion-input>
+          </ion-item>
+            
+        </ion-list>
+
+      </ion-content>
+    </ion-modal>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonPage, IonButtons, IonList, IonItem, IonSearchbar, IonRow, IonGrid, IonCol, IonIcon, IonButton, IonSegment } from '@ionic/vue';
+import { IonPage, IonButtons, IonList, IonItem, IonSearchbar, IonRow, IonGrid, IonCol, IonIcon, IonButton, IonSegment, IonModal, IonInput } from '@ionic/vue';
 import { defineComponent, Transition } from 'vue';
-import { person, arrowBack } from 'ionicons/icons';
+import { person, arrowBack, addOutline, chevronDownOutline, chevronUpOutline } from 'ionicons/icons';
+import axios from "axios";
 
 export default defineComponent({
   name: 'Clients',
-  components: { IonPage, IonButtons, IonList, IonItem, IonSearchbar, IonRow, IonGrid, IonCol, IonIcon, IonButton, Transition, IonSegment },
+  components: { IonPage, IonButtons, IonList, IonItem, IonSearchbar, IonRow, IonGrid, IonCol, IonIcon, IonButton, Transition, IonSegment, IonModal, IonInput },
   setup() {
     const device = window.innerWidth
-    return { person, device, arrowBack };
+    return { person, device, arrowBack, addOutline, chevronDownOutline, chevronUpOutline };
+  },
+  mounted(){
+    this.$store.dispatch('client/getClients', {search_value: undefined})
   },
   data() {
     return {
-      showColumn:'one',
-      selected_client:{id:null},
-      selected_phase: 'Todo'
+      showFiscal:false as Boolean,
+      client:{
+        //name:'' as String,
+        legal_name:'' as String,
+        tax_id:'' as String,
+        tax_system:'' as String,
+        zip:'' as String,
+        street:'' as String,
+        exterior:'' as String,
+        interior:'' as String,
+        neighborhood:'' as String,
+        city:'' as String,
+        municipality:'' as String,
+        state:'' as String,
+        country:'MEX' as String,
+        email:'' as String,
+        phone:'' as String,
+        provider_id:'' as String,
+      } as Object,
+      isModalOpen:false as Boolean,
+      showColumn:'one' as String,
+      selected_client:{id: 0 as number} as Object,
+      selected_phase: 'Todo' as String
     };
   },
   computed:{
+    clientsList(){
+      return this.$store.state.client.clients
+    },
+    tax_systems(){
+      return [
+        {id:'601', name:'601 | General de Ley Personas Morales'},
+        {id:'603', name:'603 | Personas Morales con Fines no Lucrativos'},
+        {id:'605', name:'605 | Sueldos y Salarios e Ingresos Asimilados a Salarios'},
+        {id:'606', name:'606 | Arrendamiento'},
+        {id:'607', name:'607 | Régimen de Enajenación o Adquisición de Bienes'},
+        {id:'608', name:'608 | Demás ingresos'},
+        {id:'609', name:'609 | Consolidación'},
+        {id:'610', name:'610 | Residentes en el Extranjero sin Establecimiento Permanente en México'},
+        {id:'611', name:'611 | Ingresos por Dividendos (socios y accionistas)'},
+        {id:'612', name:'612 | Personas Físicas con Actividades Empresariales y Profesionales'},
+        {id:'614', name:'614 | Ingresos por intereses'},
+        {id:'615', name:'615 | Régimen de los ingresos por obtención de premios'},
+        {id:'616', name:'616 | Sin obligaciones fiscales'},
+        {id:'620', name:'620 | Sociedades Cooperativas de Producción que optan por diferir sus ingresos'},
+        {id:'621', name:'621 | Incorporación Fiscal'},
+        {id:'622', name:'622 | Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras'},
+        {id:'623', name:'623 | Opcional para Grupos de Sociedades'},
+        {id:'624', name:'624 | Coordinados'},
+        {id:'625', name:'625 | Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas'},
+        {id:'626', name:'626 | Régimen Simplificado de Confianza'},
+        {id:'628', name:'628 | Hidrocarburos'},
+        {id:'629', name:'629 | De los Regímenes Fiscales Preferentes y de las Empresas Multinacionales'},
+        {id:'630', name:'630 | Enajenación de acciones en bolsa de valores'},
+      ]
+    },
     phases(){
       return ['Todo', 'En cotización', 'Vendido', 'Sin Actividad', 'Otro']
     },
@@ -97,6 +257,12 @@ export default defineComponent({
     }
   },
   methods: {
+    save(){
+      const client = Object.fromEntries(
+        Object.entries(this.client).filter(([_, value]) => value !== '' && value !== null && value !== undefined)
+      );
+      this.$store.dispatch('client/postClient', client)
+    },
     selectClient(client:Object){
       this.selected_client=client
       if(this.device<768){

@@ -1,58 +1,88 @@
 <template>
 
-    <ion-content>
-        <div class="container login-container">
-            <div class="logo">
-                <ion-img style="margin-bottom:30px; width:120px;" src="Logo.png" ></ion-img>
-            </div>
-            <ion-card style="border-radius:10px;" class="card-bg">
-                <ion-card-content>
-                    <!-- Formulario de inicio de sesión -->
-                    <ion-item>
-                        <ion-label position="floating" style="font-size:14px;" class="login-text">Usuario</ion-label>
-                    <ion-input type="text"></ion-input>
-                        </ion-item>
-                    <ion-item >
-                        <ion-label position="floating" style="font-size:14px;" class="login-text">Contraseña</ion-label>
-                        <ion-input type="password"></ion-input>
-                    </ion-item>
-                    <ion-item lines="none" class="forgot-password">
-                        <ion-label class="ion-text-center" style="font-size:12px; color:#3a82f7;">¿Olvidaste tu contraseña?</ion-label>
-                    </ion-item>
-                    <ion-button expand="block" style="font-size:13px; text-transform: capitalize; --box-shadow: none;">Iniciar sesión</ion-button>
-                </ion-card-content>
-            </ion-card>
-            <div class="social-login">
-                <!-- Botones de inicio de sesión con Google y Apple -->
-                <ion-button color="transparent" class="custom-social-button login-text" style="text-transform: capitalize; font-size:12px; padding:10px 20px; border-radius:5px;">
-                    <ion-icon :icon="logoGoogle" style="margin-right:10px;"></ion-icon>
-                    Iniciar sesión con Google
-                </ion-button>
-                <ion-button color="transparent" class="custom-social-button login-text" style="text-transform: capitalize; font-size:12px; padding:10px 20px; border-radius:5px;">
-                    <ion-icon :icon="logoApple" style="margin-right:10px;"></ion-icon>
-                    Iniciar sesión con Apple
-                </ion-button>
-            </div>
-            <div class="register">
-                <ion-label class="ion-text-center" style="font-size:13px;">¿No tienes un acuenta? <a style="color:#3a82f7;">Registrate</a></ion-label>
-            </div>
-            <div class="terms">
-                <p style="font-size:14px;">© 2023 TORstdio · <a>www.TORstdio.website</a></p>
-            </div>
+    <div class="container login-container">
+        <div class="anuncio" v-if="showAnuncio">
+            Se envio un correo a la cuenta asociada para recuperar tu contraseña.
         </div>
-    </ion-content>
+        
+        <div class="logo">
+            <ion-img style="margin-bottom:30px; width:120px;" src="Logo.png" ></ion-img>
+        </div>
+        <ion-card style="border-radius:10px;" class="card-bg">
+            <ion-card-content>
+                <!-- Formulario de inicio de sesión -->
+                <ion-item>
+                    <ion-label position="floating" style="font-size:14px;" class="login-text">Email</ion-label>
+                    <ion-input type="text" v-model.trim="user.email"></ion-input>
+                </ion-item>
+                <ion-item v-if="!racoveryPassword">
+                    <ion-label position="floating" style="font-size:14px;" class="login-text">Contraseña</ion-label>
+                    <ion-input type="password" v-model.trim="user.password"></ion-input>
+                </ion-item>
+                <ion-item v-if="!racoveryPassword" lines="none" class="forgot-password">
+                    <ion-label class="ion-text-center" @click="racoveryPassword=true" style="font-size:12px; color:#3a82f7; cursor:pointer!important;">¿Olvidaste tu contraseña?</ion-label>
+                </ion-item>
+                <ion-button v-if="racoveryPassword" @click="racoverPassword()" expand="block" style="font-size:13px; text-transform: capitalize; --box-shadow: none; margin-top:20px;">Recuperar Contraseña</ion-button>
+                <ion-button v-else @click="login()" expand="block" style="font-size:13px; text-transform: capitalize; --box-shadow: none;">Iniciar sesión</ion-button>
+            </ion-card-content>
+        </ion-card>
+        <div class="social-login">
+            <!-- Botones de inicio de sesión con Google y Apple -->
+            <ion-button color="transparent" class="custom-social-button login-text" style="text-transform: capitalize; font-size:12px; padding:10px 20px; border-radius:5px;" :disabled="true">
+                <ion-icon :icon="logoGoogle" style="margin-right:10px;"></ion-icon>
+                Iniciar sesión con Google
+            </ion-button>
+            <ion-button color="transparent" class="custom-social-button login-text" style="text-transform: capitalize; font-size:12px; padding:10px 20px; border-radius:5px;" :disabled="true">
+                <ion-icon :icon="logoApple" style="margin-right:10px;"></ion-icon>
+                Iniciar sesión con Apple
+            </ion-button>
+        </div>
+        <div class="register">
+            <ion-label class="ion-text-center" style="font-size:13px;">¿No tienes una cuenta? <a style="color:#3a82f7;" href="https://torstdio.website/landing/" target="_blank">Solicitala</a></ion-label>
+        </div>
+        <div class="terms">
+            <p style="font-size:14px;">© 2023 TORstdio · <a href="https://torstdio.website/" target="_blank">www.TORstdio.website</a></p>
+        </div>
+    </div>
 
 </template>
 
 <script lang="ts">
-import { IonContent, IonImg, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem } from '@ionic/vue';
+import { IonContent, IonImg, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem, IonInput } from '@ionic/vue';
 import { logoGoogle, logoApple } from 'ionicons/icons';
 import { defineComponent } from 'vue';
 export default defineComponent({
-  components: { IonContent, IonImg, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem},
-  setup(){
-    return { logoGoogle, logoApple }
-  }
+    components: { IonContent, IonImg, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem, IonInput},
+    setup(){
+        return { logoGoogle, logoApple }
+    },
+    data(){
+        return{
+            showAnuncio:false,
+            racoveryPassword:false,
+            user:{
+                email: '' as String,
+                password: '' as String
+            }
+        }
+    },
+    methods: {
+        async login(): Promise<void> {
+            console.log(this.user)
+            await this.$store.dispatch('user/login', this.user).then((response:boolean)=>{
+                if(response){
+                    location.reload();
+                }
+            })
+        },
+        racoverPassword(){
+            this.racoveryPassword = false
+            this.showAnuncio = true
+            setTimeout(()=>{
+                this.showAnuncio = false
+            }, 3000);
+        }
+    },
 })
 
 </script>
@@ -90,6 +120,16 @@ ion-card {
   bottom: 1rem;
   text-align: center;
   width: 100%;
+}
+.anuncio {
+    background:#3a82f7;
+    position: fixed;
+    top: 1rem;
+    text-align: center;
+    padding:5px 15px;
+    border-radius: 6px;
+    font-size:13px;
+    font-weight:500;
 }
 
 @media(max-width: 500px){

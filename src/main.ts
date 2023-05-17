@@ -1,6 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
+import store from './store';
+import axios from 'axios';
+import { Storage } from '@ionic/storage';
 
 import { IonicVue } from '@ionic/vue';
 
@@ -23,9 +26,21 @@ import '@ionic/vue/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+
+
+
+const ionicStorage = new Storage();
+await ionicStorage.create();
+await ionicStorage.get('token').then(response=>{
+  // Token para axios
+  axios.defaults.baseURL = import.meta.env.VITE_BACKEND_ROUTE;
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + response
+})
+
 const app = createApp(App)
   .use(IonicVue)
-  .use(router);
+  .use(router)
+  .use(store);
   
 router.isReady().then(() => {
   app.mount('#app');

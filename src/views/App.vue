@@ -17,7 +17,7 @@
           </ion-item>
         </ion-list>
       </ion-content>
-      <ion-item class="menu-bg" style="padding:10px; font-size:13px;">
+      <ion-item class="menu-bg" style="padding:10px; font-size:13px; cursor: pointer;" @click="logout">
         <ion-icon style="font-size:16px; margin-right:15px;" :icon="power" slot="start"></ion-icon>
         <ion-label style="font-size:14px;">Cerrar Sesión</ion-label>
       </ion-item>
@@ -38,9 +38,9 @@
 
             <ion-chip style="margin-right:10px;" router-link="/account">
               <ion-avatar>
-                <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                <img src="https://ionicframework.com/docs/img/demos/avatar.svg" />
               </ion-avatar>
-              <ion-label>Joel de la Fuente</ion-label>
+              <ion-label>{{current_user.name}}</ion-label>
             </ion-chip>
           </div>
 
@@ -64,6 +64,9 @@ export default defineComponent({
     const device = window.innerWidth
     return { menu, calendarOutline, power, device, cashOutline, peopleOutline, gridOutline };
   },
+  mounted(){
+    this.$store.dispatch('user/getCurrentUser')
+  },
   data() {
     return {
       menuOptions: [
@@ -79,6 +82,9 @@ export default defineComponent({
     };
   },
   computed:{
+    current_user(): object {
+      return this.$store.state.user.current_user
+    },
     pageStyle() {
       if (this.device >= 768) {
         return this.divWidth ;
@@ -95,6 +101,9 @@ export default defineComponent({
     },
   },
   methods: {
+    logout(){
+      this.$store.dispatch('user/logout')
+    },
     closeOpenMenu() {
       if (!this.show_split_pane) {
         this.menuWidth = 'width:250px;'
