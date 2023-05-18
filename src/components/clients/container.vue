@@ -9,7 +9,7 @@
                 {{phase}}
             </ion-chip>
           </ion-segment>
-          <div class="scroll-container" style="height: calc(100vh - 56px) !important; overflow-y: auto;">
+          <ion-content class="scroll-container" style="height: calc(100vh - 56px) !important; overflow-y: auto;">
             <ion-list  style="background: transparent; padding-top:0px;">
               
               <ion-item @click="isModalOpen=true" style="padding:5px 0px 5px 0px; cursor: pointer;" class="add-client-button" color="none" lines="none">
@@ -17,12 +17,15 @@
                 <ion-label>Agregar Cliente</ion-label>
               </ion-item>
 
-              <ion-item v-for="(client, index) in clientsList" :key="index" @click="selectClient(client)" :style="client.id==selected_client.id ? 'background:#26549c!important; transition: background-color .03s; border-radius: 6px;':''" style="padding:5px 0px 5px 0px; border-bottom:solid 1px; margin:0px 10px;" class="border-color menu-element" color="none" lines="none">
+              <ion-item v-for="(client, index) in clientsList" :key="index" @click="selectClient(client)" :style="selected_client!=undefined && client.id==selected_client.id ? 'background:#26549c!important; transition: background-color .03s; border-radius: 6px;':''" style="padding:5px 0px 5px 0px; border-bottom:solid 1px; margin:0px 10px;" class="border-color menu-element" color="none" lines="none">
                 <ion-icon style="margin-right:10px; font-size:12px;" :icon="person"></ion-icon>
                 <ion-label>{{client.legal_name}}</ion-label>
               </ion-item>
             </ion-list>
-          </div>
+            <ion-infinite-scroll @ionInfinite="ionInfinite($event)">
+              <ion-infinite-scroll-content></ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+          </ion-content>
           <!-- Contenido de la primera columna -->
         </ion-col>
         </Transition>
@@ -36,7 +39,7 @@
             </ion-buttons>
           </div>
 
-          <div v-if="selected_client.id!=0">
+          <div v-if="selected_client!=null">
 
           </div>
           <div else style="background-image:url('/icon.svg'); height:calc(100vh - 56px)!important; background-repeat:no-repeat; background-position: center;" class="logo">
@@ -64,16 +67,16 @@
           
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text">Nombre</ion-label>
-            <ion-input type="text" v-model.trim="client.legal_name"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.legal_name"></ion-input>
           </ion-item>
 
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text">Email</ion-label>
-            <ion-input type="text" v-model.trim="client.email"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.email"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text">Teléfono</ion-label>
-            <ion-input type="text" v-model.trim="client.phone"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.phone"></ion-input>
           </ion-item>
 
         </ion-list>
@@ -88,54 +91,54 @@
 
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text">Razon Social</ion-label>
-            <ion-input type="text" v-model.trim="client.legal_name"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.legal_name"></ion-input>
           </ion-item>
 
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text">RFC</ion-label>
-            <ion-input type="text" v-model.trim="client.tax_id"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.tax_id"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text">Régimen Fiscal</ion-label>
-            <ion-select v-model.trim="client.tax_system">
+            <ion-select v-bind:v-model="client.tax_system">
               <ion-select-option v-for="(system, index) in tax_systems" :key="index" :value="system.id">{{system.name}}</ion-select-option>
             </ion-select>
           </ion-item>
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text">C.P.</ion-label>
-            <ion-input type="text" v-model.trim="client.zip"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.zip"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text">Calle</ion-label>
-            <ion-input type="text" v-model.trim="client.street"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.street"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text"># Exterior</ion-label>
-            <ion-input type="text" v-model.trim="client.exterior"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.exterior"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text"># Interior</ion-label>
-            <ion-input type="text" v-model.trim="client.interior"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.interior"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text">Colonia</ion-label>
-            <ion-input type="text" v-model.trim="client.neighborhood"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.neighborhood"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text">Ciudad</ion-label>
-            <ion-input type="text" v-model.trim="client.city"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.city"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text">Monicipio</ion-label>
-            <ion-input type="text" v-model.trim="client.municipality"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.municipality"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text">Estado</ion-label>
-            <ion-input type="text" v-model.trim="client.state"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.state"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating" style="font-size:14px;" class="login-text">País</ion-label>
-            <ion-input type="text" v-model.trim="client.country"></ion-input>
+            <ion-input type="text" v-bind:v-model="client.country"></ion-input>
           </ion-item>
             
         </ion-list>
@@ -146,51 +149,72 @@
 </template>
 
 <script lang="ts">
-import { IonPage, IonButtons, IonList, IonItem, IonSearchbar, IonRow, IonGrid, IonCol, IonIcon, IonButton, IonSegment, IonModal, IonInput } from '@ionic/vue';
+import { IonPage, IonButtons, IonList, IonItem, IonSearchbar, IonRow, IonGrid, IonCol, IonIcon, IonButton, IonSegment, IonModal, IonInput, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/vue';
 import { defineComponent, Transition } from 'vue';
 import { person, arrowBack, addOutline, chevronDownOutline, chevronUpOutline } from 'ionicons/icons';
 import axios from "axios";
+import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'Clients',
-  components: { IonPage, IonButtons, IonList, IonItem, IonSearchbar, IonRow, IonGrid, IonCol, IonIcon, IonButton, Transition, IonSegment, IonModal, IonInput },
+  components: { IonPage, IonButtons, IonList, IonItem, IonSearchbar, IonRow, IonGrid, IonCol, IonIcon, IonButton, Transition, IonSegment, IonModal, IonInput, IonInfiniteScroll, IonInfiniteScrollContent },
   setup() {
+    const store = useStore();
     const device = window.innerWidth
-    return { person, device, arrowBack, addOutline, chevronDownOutline, chevronUpOutline };
+    return { store, person, device, arrowBack, addOutline, chevronDownOutline, chevronUpOutline };
   },
   mounted(){
-    this.$store.dispatch('client/getClients', {search_value: undefined})
+    this.store.dispatch('client/getClients', this.options)
+  },
+  watch:{
+    options:{
+      handler(){
+        this.store.dispatch('client/getClients', this.options)
+      }, deep: true
+    },
   },
   data() {
     return {
+      options:{
+        sort:{} as Object,
+        items_per_page:15,
+        page:1 as Number,
+        filters:{} as Object
+      },
       showFiscal:false as Boolean,
       client:{
-        //name:'' as String,
-        legal_name:'' as String,
-        tax_id:'' as String,
-        tax_system:'' as String,
-        zip:'' as String,
-        street:'' as String,
-        exterior:'' as String,
-        interior:'' as String,
-        neighborhood:'' as String,
-        city:'' as String,
-        municipality:'' as String,
-        state:'' as String,
-        country:'MEX' as String,
-        email:'' as String,
-        phone:'' as String,
-        provider_id:'' as String,
-      } as Object,
+        //name:'' as string,
+        legal_name:'' as string,
+        tax_id:'' as string,
+        tax_system:'' as string,
+        zip:'' as string,
+        street:'' as string,
+        exterior:'' as string,
+        interior:'' as string,
+        neighborhood:'' as string,
+        city:'' as string,
+        municipality:'' as string,
+        state:'' as string,
+        country:'MEX' as string,
+        email:'' as string,
+        phone:'' as string,
+        provider_id:'' as string,
+      },
       isModalOpen:false as Boolean,
-      showColumn:'one' as String,
-      selected_client:{id: 0 as number} as Object,
-      selected_phase: 'Todo' as String
+      showColumn:'one' as string,
+      selected_client: null as any,
+      selected_phase: 'Todo' as string
     };
   },
   computed:{
     clientsList(){
-      return this.$store.state.client.clients
+      return this.store.state.client.clients
+    },
+    meta(){
+      return this.store.state.sale.meta
+    },
+    loader(){
+      return this.store.state.sale.loader
     },
     tax_systems(){
       return [
@@ -257,13 +281,17 @@ export default defineComponent({
     }
   },
   methods: {
+    ionInfinite(ev:any){
+      this.options.items_per_page = this.options.items_per_page + 15
+      ev.target.complete()
+    },
     save(){
       const client = Object.fromEntries(
         Object.entries(this.client).filter(([_, value]) => value !== '' && value !== null && value !== undefined)
       );
-      this.$store.dispatch('client/postClient', client)
+      this.store.dispatch('client/postClient', client)
     },
-    selectClient(client:Object){
+    selectClient(client:object){
       this.selected_client=client
       if(this.device<768){
         this.showColumn = "two"

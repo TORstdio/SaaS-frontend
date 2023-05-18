@@ -1,7 +1,7 @@
 <template>
   <ion-app>
     <Login v-if="authenticated=='false'" />
-    <App v-if="authenticated=='true'" />
+    <App v-if="authenticated=='true'"/>
   </ion-app>
 </template>
 

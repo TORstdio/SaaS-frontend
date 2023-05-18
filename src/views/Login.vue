@@ -13,11 +13,11 @@
                 <!-- Formulario de inicio de sesión -->
                 <ion-item>
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Email</ion-label>
-                    <ion-input type="text" v-model.trim="user.email"></ion-input>
+                    <ion-input type="text" v-model="user.email"></ion-input>
                 </ion-item>
                 <ion-item v-if="!racoveryPassword">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Contraseña</ion-label>
-                    <ion-input type="password" v-model.trim="user.password"></ion-input>
+                    <ion-input type="password" v-model="user.password"></ion-input>
                 </ion-item>
                 <ion-item v-if="!racoveryPassword" lines="none" class="forgot-password">
                     <ion-label class="ion-text-center" @click="racoveryPassword=true" style="font-size:12px; color:#3a82f7; cursor:pointer!important;">¿Olvidaste tu contraseña?</ion-label>
@@ -38,7 +38,7 @@
             </ion-button>
         </div>
         <div class="register">
-            <ion-label class="ion-text-center" style="font-size:13px;">¿No tienes una cuenta? <a style="color:#3a82f7;" href="https://torstdio.website/landing/" target="_blank">Solicitala</a></ion-label>
+            <ion-label class="ion-text-center" style="font-size:13px;">¿Aún no tienes una cuenta? <a style="color:#3a82f7;" href="https://torstdio.website/landing/" target="_blank">Solicitala</a></ion-label>
         </div>
         <div class="terms">
             <p style="font-size:14px;">© 2023 TORstdio · <a href="https://torstdio.website/" target="_blank">www.TORstdio.website</a></p>
@@ -51,36 +51,40 @@
 import { IonContent, IonImg, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem, IonInput } from '@ionic/vue';
 import { logoGoogle, logoApple } from 'ionicons/icons';
 import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
+
 export default defineComponent({
     components: { IonContent, IonImg, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem, IonInput},
     setup(){
-        return { logoGoogle, logoApple }
+        const store = useStore();
+        return { logoGoogle, logoApple, store }
     },
     data(){
         return{
             showAnuncio:false,
             racoveryPassword:false,
             user:{
-                email: '' as String,
-                password: '' as String
+                email: '' as string,
+                password: '' as string
             }
         }
     },
     methods: {
         async login(): Promise<void> {
-            console.log(this.user)
-            await this.$store.dispatch('user/login', this.user).then((response:boolean)=>{
+            await this.store.dispatch('user/login', this.user).then((response:boolean)=>{
                 if(response){
                     location.reload();
                 }
             })
         },
         racoverPassword(){
+
             this.racoveryPassword = false
             this.showAnuncio = true
             setTimeout(()=>{
                 this.showAnuncio = false
             }, 3000);
+            
         }
     },
 })

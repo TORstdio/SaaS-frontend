@@ -27,26 +27,26 @@ interface Options {
     filters: Filters
 }
 
-interface Client{
-    client: object
+interface Sale{
+    sale: object
 }
 
 interface State {
-    clients: Array<object>
+    sales: Array<object>
     loader: boolean
     meta: object
 }
 
 const state: State = {
-    clients: [],
+    sales: [],
     loader: false,
-    meta: {}
+    meta: {},
 };
 
 const getters: GetterTree<State, RootState> = {};
 
 const actions: ActionTree<State, RootState> = {
-    getClients({ commit, state }: ActionContext<State, RootState>, options: Options) {
+    getSales({ commit, state }: ActionContext<State, RootState>, options: Options) {
         console.log(options)
         var link = ''
         link = "?page=" + options.page + "&itemsPerPage=" + options.items_per_page
@@ -60,28 +60,29 @@ const actions: ActionTree<State, RootState> = {
         }
         state.loader = true
         const apiUrl = import.meta.env.VITE_BACKEND_ROUTE;
-        axios.get(apiUrl + "api/v2/companies" + link).then(response => {
-            commit('setClients', response.data)
+
+        axios.get(apiUrl + "api/v2/sales" + link).then(response => {
+            commit('setSales', response.data)
         }).catch(error=>{
             
         })
     },
-    postClients({ commit }: ActionContext<State, RootState>, client: Client) {
+    postSales({ commit }: ActionContext<State, RootState>, sale: Sale) {
         const apiUrl = import.meta.env.VITE_BACKEND_ROUTE;
-        axios.post(apiUrl + 'api/v1/clients', client).then(response=>{
-            commit('addClient', client)
+        axios.post(apiUrl + 'api/v1/sales', sale).then(response=>{
+            commit('addSale', sale)
         })
     }
 };
 
 const mutations: MutationTree<State> = {
-    setClients(state, data) {
-        state.clients = state.clients.concat(data.data);
+    setSales(state, data) {
+        state.sales = data.data;
         state.meta = data.meta
         state.loader = false;
     },
-    addClient(state, data){
-        state.clients.push(data)
+    addSale(state, data){
+        state.sales.push(data)
     }
 };
   

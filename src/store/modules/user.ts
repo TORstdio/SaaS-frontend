@@ -97,7 +97,7 @@ const actions: ActionTree<State, RootState> = {
     getCurrentUser({ commit }: ActionContext<State, RootState>) {
         const apiUrl = import.meta.env.VITE_BACKEND_ROUTE;
         axios.get(apiUrl + "api/v1/user/current").then(response => {
-            commit('setCurrentUser', response.data.data)
+            commit('setCurrentUser', response.data)//.data
         })
     },
     uploadProfilePicture({ state }: ActionContext<State, RootState>, profile_picture) {
@@ -132,7 +132,7 @@ const actions: ActionTree<State, RootState> = {
                     state.current_user = { ...state.current_user, ...edited_user }; // Fusionar los objetos a[aIndex] y b, manteniendo la propiedad gato de a[aIndex]
                 }
                 if(state.users.length>0){
-                    const usersIndex = state.users.findIndex((item) => item.id === edited_user.id); // Buscar el índice del objeto con id 1 en a
+                    const usersIndex = state.users.findIndex((item:any) => item.id === edited_user.id); // Buscar el índice del objeto con id 1 en a
                     if (usersIndex !== -1) {
                         state.users[usersIndex] = { ...state.users[usersIndex], ...edited_user }; // Fusionar los objetos a[aIndex] y b, manteniendo la propiedad gato de a[aIndex]
                     }

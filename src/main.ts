@@ -27,21 +27,22 @@ import '@ionic/vue/css/display.css';
 import './theme/variables.css';
 
 
+initializeApp()
 
-
-const ionicStorage = new Storage();
-await ionicStorage.create();
-await ionicStorage.get('token').then(response=>{
-  // Token para axios
-  axios.defaults.baseURL = import.meta.env.VITE_BACKEND_ROUTE;
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + response
-})
-
-const app = createApp(App)
-  .use(IonicVue)
-  .use(router)
-  .use(store);
-  
-router.isReady().then(() => {
-  app.mount('#app');
-});
+async function initializeApp() {
+  const ionicStorage = new Storage();
+  await ionicStorage.create();
+  await ionicStorage.get('token').then(response=>{
+    // Token para axios
+    axios.defaults.baseURL = import.meta.env.VITE_BACKEND_ROUTE;
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + response
+  })
+  const app = createApp(App)
+    .use(IonicVue)
+    .use(router)
+    .use(store);
+    
+  router.isReady().then(() => {
+    app.mount('#app');
+  });
+}

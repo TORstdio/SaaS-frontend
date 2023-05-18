@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <ion-avatar @click="selectImage">
+        <ion-avatar ><!--@click="selectImage"-->
           <img src="https://ionicframework.com/docs/img/demos/avatar.svg" />
         </ion-avatar>
         <ion-card style="border-radius:10px;" class="card-bg">
@@ -27,7 +27,7 @@
             </ion-card-content>
         </ion-card>
         <div class="logout">
-          <ion-button @click="login()" expand="block" style="font-size:13px; text-transform: capitalize; --box-shadow: none; margin-bottom:15px;">Guardar Cambios</ion-button>
+          <ion-button @click="save()" expand="block" style="font-size:13px; text-transform: capitalize; --box-shadow: none; margin-bottom:15px;">Guardar Cambios</ion-button>
           <ion-label class="ion-text-center" style="font-size:12px; color:#3a82f7; cursor: pointer;" @click="logout">Cerrar sesión</ion-label>
         </div>
     </div>
@@ -38,28 +38,32 @@
 import { IonContent, IonImg, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem, IonInput } from '@ionic/vue';
 import { logoGoogle, logoApple } from 'ionicons/icons';
 import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
 
 export default defineComponent({
     components: { IonContent, IonImg, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem, IonInput},
     setup(){
-      let selectedImage: File | null = null;
-      return { logoGoogle, logoApple }
+      const store = useStore();
+      //let selectedImage: File | null = null;
+      return { logoGoogle, logoApple, store }
     },
     data(){return{
       password:'',
       modifyPassword:false,
-      selectedImage:''
     }},
     computed:{
-      current_user(): object {
-        return this.$store.state.user.current_user
+      current_user(){
+        return this.store.state.user.current_user
       },
     },
     methods: {
-      logout(){
-        this.$store.dispatch('user/logout')
+      save(){
+
       },
-      async selectImage() {
+      logout(){
+        this.store.dispatch('user/logout')
+      },
+      /*async selectImage() {
         const imagePicker = await Filesystem.getUri({
           directory: Directory.Pictures,
           allowMultiple: false,
@@ -77,7 +81,7 @@ export default defineComponent({
           this.selectedImage = file;
           //this.currentUser.profile_photo_url = URL.createObjectURL(file);
         }
-      },
+      },*/
     }
 })
 

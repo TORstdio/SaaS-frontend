@@ -103,9 +103,10 @@ http://ionicframework.com/docs/theming/ */
 .columnTwo{
   background: #f5f6f7;
 }
-.border-color{
+.border-color, td, th{
   border-color:#dedede!important;
 }
+
 ion-searchbar {
   --background: #f5f6f7!important;
 }
@@ -116,10 +117,22 @@ ion-searchbar {
 .add-client-button{
   background:#e5e6e7;
 }
+th, .footer-table{
+  background:#f5f6f7;
+}
+.event-calendar{
+  background-color:#e0e0e0;
+}
 
 
 @media (prefers-color-scheme: dark) {
-  .add-client-button{
+  .event-calendar{
+    background-color: #313233;
+  }
+  td, th, .border-calendar{
+    border-color:#2d2d2d!important;
+  }
+  .add-client-button, th, .footer-table{
     background: #1d1e1f;
   }
   .menu-element:hover, .menu-item-selected{

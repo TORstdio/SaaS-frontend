@@ -57,15 +57,17 @@
 import { IonContent, IonHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonSearchbar, IonRouterOutlet, IonAvatar, IonChip } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import { menu, power, calendarOutline, cashOutline, peopleOutline, gridOutline } from 'ionicons/icons';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   components: { IonContent, IonHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonSearchbar, IonRouterOutlet, IonAvatar, IonChip  },
   setup() {
+    const store = useStore();
     const device = window.innerWidth
-    return { menu, calendarOutline, power, device, cashOutline, peopleOutline, gridOutline };
+    return { menu, calendarOutline, power, device, cashOutline, peopleOutline, gridOutline, store};
   },
   mounted(){
-    this.$store.dispatch('user/getCurrentUser')
+    this.store.dispatch('user/getCurrentUser')
   },
   data() {
     return {
@@ -82,8 +84,8 @@ export default defineComponent({
     };
   },
   computed:{
-    current_user(): object {
-      return this.$store.state.user.current_user
+    current_user(){
+      return this.store.state.user.current_user
     },
     pageStyle() {
       if (this.device >= 768) {
@@ -102,7 +104,7 @@ export default defineComponent({
   },
   methods: {
     logout(){
-      this.$store.dispatch('user/logout')
+      this.store.dispatch('user/logout')
     },
     closeOpenMenu() {
       if (!this.show_split_pane) {
