@@ -112,12 +112,14 @@ export default defineComponent({
         this.divWidth = 'width:calc(100vw - 250px);';
         this.$nextTick(()=>{
           this.show_split_pane = true;
+          this.store.commit('snackbar/setSplitPane', true)
         })
       } else {
         this.menuWidth = 'width:0px;'
         this.divWidth = 'width:200vw;'
         this.$nextTick(()=>{
           this.show_split_pane = false;
+          this.store.commit('snackbar/setSplitPane', false)
         })
       }
     },

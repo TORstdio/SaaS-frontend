@@ -27,7 +27,7 @@
                     <div class="day" v-for="day in daysOfWeek" :key="day">{{ day }}</div>
                 </div>
                 <div v-if="showCalendar" class="cells">
-                    <div v-for="(date, index) in calendarDates(currentDate)" :key="index" class="cell" :class="{ 'prev-month': isPrevMonth(date), 'next-month': isNextMonth(date) }">
+                    <div v-for="(date, index) in calendarDates(currentDate)" :key="index" class="cell" :class="{ 'prev-month': isPrevMonth(date), 'next-month': isNextMonth(date) }"  :style="(show_split_pane ? 'width:calc((100vw - 40px - 249px - 10px) / 7)!important;' : 'width:calc((100vw - 40px - 10px) / 7)!important;')">
                         <div class="event">
                             <div style="text-align:center; font-size:14px; font-weight:500; margin-bottom:5px;">
                                 <div :style="sameDay(currentDate, date) ? 'background:#3a82f7; color:white!important;' : ''" style="cursor: pointer; border-radius:50%; width:24px; padding:3px; margin:-1px auto;" @click="selectDate(date)">{{new Date(date).getDate()}}</div>
@@ -35,9 +35,11 @@
 
                             <div v-if="!loader">
                                 <div v-for="(event, index) in eventsOfDay(date).slice(0,3)" :key="index" style="cursor: pointer;">
-                                    <div @click="openEvent(event)" v-if="device>=768" class="eventChip" :style="'font-size:12px; background:' + event.activity_type.color + '; border-radius:3px; padding: 1px 5px; color:white!important;'">
-                                        {{ event.date.slice(11,16) }}
-                                        <strong style="text-transform:lowercase!important;">{{ event.company.attributes.name.slice(0,15) }}<span v-if="event.company.attributes.name.length>15">...</span></strong>
+                                    <div @click="openEvent(event)" v-if="device>=768" class="eventChip" :style="'background:' + event.activity_type.color + ';'">
+                                        <span>
+                                            {{ event.date.slice(11,16) }}
+                                            <strong v-if="event.company!=undefined" style="text-transform:lowercase!important;">{{ event.company.attributes.name }}</strong>
+                                        </span>
                                     </div>
                                 </div>
 
@@ -66,7 +68,7 @@
                         <div v-for="(event, index) in eventsOfHour(hour)" :key="index">
                             <div @click="openEvent(event)" class="eventChip" :style="'font-size:12px; background:' + event.activity_type.color + '; border-radius:3px; padding: 1px 5px; color:white!important;'">
                                 {{ event.date.slice(11,16) }}
-                                <strong >{{ event.company.attributes.name }}</strong>
+                                <strong v-if="event.company!=undefined">{{ event.company.attributes.name }}</strong>
                             </div>
                         </div>
                     </div>
@@ -182,7 +184,7 @@
                 </ion-toolbar>
 
                 <ion-list style="margin-top:50px; padding:20px; background:transparent;">
-                    <ion-title>
+                    <ion-title v-if="event.company!=undefined">
                         {{selected_event.company.attributes.name}} | {{selected_event.contact.name + ' ' + selected_event.contact.last}}
                     </ion-title>
                     <ion-title style="font-size:15px; filter:opacity(.6);margin: 10px 0px 5px 0px;">
@@ -291,6 +293,9 @@ import { chevronForwardOutline, chevronBackOutline, calendarOutline, addOutline,
         },
         loader(){
             return this.store.state.activity.loader
+        },
+        show_split_pane(){
+            return this.store.state.snackbar.show_split_pane
         }
     },
     methods: {
@@ -459,6 +464,14 @@ import { chevronForwardOutline, chevronBackOutline, calendarOutline, addOutline,
         text-align: center;
     }
 
+    .prev-month {
+        opacity: 0.5;
+    }
+
+    .next-month {
+        opacity: 0.5;
+    }
+
     .cells {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
@@ -470,16 +483,15 @@ import { chevronForwardOutline, chevronBackOutline, calendarOutline, addOutline,
         padding: 5px;
     }
 
-    .prev-month {
-        opacity: 0.5;
-    }
-
-    .next-month {
-        opacity: 0.5;
-    }
-
     .eventChip{
         margin-bottom:2px;
+        border-radius:3px; 
+        padding: 1px 5px; 
+        color:white!important; 
+        font-size:12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
 </style>
