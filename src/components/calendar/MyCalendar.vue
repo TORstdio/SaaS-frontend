@@ -184,7 +184,7 @@
                 </ion-toolbar>
 
                 <ion-list style="margin-top:50px; padding:20px; background:transparent;">
-                    <ion-title v-if="event.company!=undefined">
+                    <ion-title v-if="selected_event.company!=undefined">
                         {{selected_event.company.attributes.name}} | {{selected_event.contact.name + ' ' + selected_event.contact.last}}
                     </ion-title>
                     <ion-title style="font-size:15px; filter:opacity(.6);margin: 10px 0px 5px 0px;">
