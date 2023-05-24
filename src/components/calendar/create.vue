@@ -2,7 +2,7 @@
     <ion-content>
         <ion-toolbar class="toolbar-space columnTwo" style="position:fixed;" color="transparent">
             <ion-buttons slot="start" style="padding-left:5px;">
-                <ion-button @click="isModalOpen = false">
+                <ion-button @click="closeModal()">
                     <ion-icon :icon="arrowBack"></ion-icon>
                 </ion-button>
                 </ion-buttons>
@@ -47,7 +47,7 @@
 
             <div class="autocomplete" v-if="search_client_active">
                 <ion-progress-bar v-if="isLoadingClients" style="height:2px;" type="indeterminate"></ion-progress-bar>
-                <ion-list>
+                <!--ion-list>
                     <ion-item v-for="(client, index) in entries.clients" :key="index" @click="activity.subject_id = client.id, search_client_active = false, searchClients=client.legal_name">
                         <ion-label>
                             {{ client.legal_name }}
@@ -56,7 +56,7 @@
                             perro
                         </ion-note>
                     </ion-item>
-                </ion-list>
+                </ion-list-->
             </div>
 
             <ion-item>
@@ -64,11 +64,11 @@
                     <ion-icon style="margin-right:10px;"></ion-icon>
                     Actividad
                 </ion-label>
-                <ion-select v-bind:v-model="activity.activity_id">
+                <!--ion-select v-bind:v-model="activity.activity_id">
                     <ion-select-option v-for="(type, index) in activityTypes" :key="index">
                             {{type.type}}
                     </ion-select-option>
-                </ion-select>
+                </ion-select-->
             </ion-item>
 
             <ion-item>
@@ -147,7 +147,16 @@ import axios from "axios";
         save(){
                 
         },
+        closeModal(){
 
+        },
+        saveDate(value:any){
+            this.activity.only_date = value.slice(0,10)
+        },
+        saveHour(value:any){
+            console.log(value.slice(11,17))
+            this.activity.only_time = value.slice(11,16)
+        },
     },
 });
 </script>

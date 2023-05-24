@@ -270,13 +270,6 @@ import { chevronForwardOutline, chevronBackOutline, calendarOutline, addOutline,
             }
             return this.events.filter((event: Event)=>event.only_date==new Date(date).toLocaleString("sv-SE", {timeZone: "America/Monterrey"}).slice(0,10),)
         },
-        saveDate(value:any){
-            this.activity.date = value.slice(0,10)
-        },
-        saveHour(value:any){
-            console.log(value.slice(11,17))
-            this.activity.hour = value.slice(11,16)
-        },
 
         calendarDates(currentDate: string) {
             var currentDate2 = new Date(currentDate)
