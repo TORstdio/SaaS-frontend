@@ -68,7 +68,7 @@ const actions: ActionTree<State, RootState> = {
         }
         state.loader = true
         const apiUrl = import.meta.env.VITE_BACKEND_ROUTE;
-        axios.get(apiUrl + "api/v2/calendars" + link).then(response => {
+        axios.get(apiUrl + "api/v1/activities" + link).then(response => {
             console.log(response)
             commit('setActivities', response.data)
         }).catch(error=>{

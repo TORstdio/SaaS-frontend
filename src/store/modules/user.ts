@@ -97,7 +97,7 @@ const actions: ActionTree<State, RootState> = {
     getCurrentUser({ commit }: ActionContext<State, RootState>) {
         const apiUrl = import.meta.env.VITE_BACKEND_ROUTE;
         axios.get(apiUrl + "api/v1/user/current").then(response => {
-            commit('setCurrentUser', response.data)//.data
+            commit('setCurrentUser', response.data.data)
         })
     },
     uploadProfilePicture({ state }: ActionContext<State, RootState>, profile_picture) {

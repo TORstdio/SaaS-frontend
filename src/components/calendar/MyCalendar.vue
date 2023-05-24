@@ -1,5 +1,5 @@
 <template>
-    <ion-page>
+    <ion-page class="bg">
         <!-- header -->
         <div class="toolbar-container">
             <ion-buttons slot="start" v-if="calendarMode">
@@ -27,18 +27,21 @@
                     <div class="day" v-for="day in daysOfWeek" :key="day">{{ day }}</div>
                 </div>
                 <div v-if="showCalendar" class="cells">
-                    <div v-for="(date, index) in calendarDates(currentDate)" :key="index" class="cell" :class="{ 'prev-month': isPrevMonth(date), 'next-month': isNextMonth(date) }"  :style="(show_split_pane ? 'width:calc((100vw - 40px - 249px - 10px) / 7)!important;' : 'width:calc((100vw - 40px - 10px) / 7)!important;')">
+                    <div v-for="(date, index) in calendarDates(currentDate)" :key="index" class="cell" :class="{ 'prev-month': isPrevMonth(date), 'next-month': isNextMonth(date) }"  :style="(show_split_pane && device>=768 ? 'width:calc((100vw - 40px - 249px - 10px) / 7)!important;' : 'width:calc((100vw - 40px - 10px) / 7)!important;')">
                         <div class="event">
                             <div style="text-align:center; font-size:14px; font-weight:500; margin-bottom:5px;">
                                 <div :style="sameDay(currentDate, date) ? 'background:#3a82f7; color:white!important;' : ''" style="cursor: pointer; border-radius:50%; width:24px; padding:3px; margin:-1px auto;" @click="selectDate(date)">{{new Date(date).getDate()}}</div>
                             </div>
 
                             <div v-if="!loader">
-                                <div v-for="(event, index) in eventsOfDay(date).slice(0,3)" :key="index" style="cursor: pointer;">
-                                    <div @click="openEvent(event)" v-if="device>=768" class="eventChip" :style="'background:' + event.activity_type.color + ';'">
-                                        <span>
+                                <div v-for="(event, index) in eventsOfDay(date).slice(0,3)" :key="index" style="cursor: pointer;" :style="event.completed ? 'filter:opacity(.8);' : ''">
+                                    <div @click="openEvent(event)" v-if="device>=768" class="eventChip event-calendar">
+                                        <span style="font-size:10px;">
+                                            <div style="border-radius:50%; height:5px; width:5px; background:red; display: inline-block; margin-right: 2px; transform: translateY(-1px);"></div>
                                             {{ event.date.slice(11,16) }}
-                                            <strong v-if="event.company!=undefined" style="text-transform:lowercase!important;">{{ event.company.attributes.name }}</strong>
+                                            <strong v-if="event.subject!=undefined" style="text-transform:lowercase!important; font-size:12px;">  
+                                                {{ event.subject.legal_name }}
+                                            </strong>
                                         </span>
                                     </div>
                                 </div>
@@ -66,9 +69,9 @@
                     </div>
                     <div style="width:calc(100% - 35px); padding:5px 0px 5px 15px; border-top:1px solid;" class="border-calendar">
                         <div v-for="(event, index) in eventsOfHour(hour)" :key="index">
-                            <div @click="openEvent(event)" class="eventChip" :style="'font-size:12px; background:' + event.activity_type.color + '; border-radius:3px; padding: 1px 5px; color:white!important;'">
+                            <div @click="openEvent(event)" class="eventChip" :style="'font-size:12px; border-radius:3px; padding: 1px 5px; color:white!important;'">
                                 {{ event.date.slice(11,16) }}
-                                <strong v-if="event.company!=undefined">{{ event.company.attributes.name }}</strong>
+                                <strong v-if="event.subject!=undefined">{{ event.subject.legal_name }}</strong>
                             </div>
                         </div>
                     </div>
@@ -85,85 +88,7 @@
         
         <!-- creation modal -->
         <ion-modal :is-open="isModalOpen" @didDismiss="isModalOpen = false">
-            <ion-content>
-                <ion-toolbar class="toolbar-space columnTwo" style="position:fixed;" color="transparent">
-                    <ion-buttons slot="start" style="padding-left:5px;">
-                        <ion-button @click="isModalOpen = false">
-                            <ion-icon :icon="arrowBack"></ion-icon>
-                        </ion-button>
-                        </ion-buttons>
-                        <ion-buttons slot="end" style="padding-right:15px;">
-                        <ion-button expand="block" style="text-transform: capitalize; --box-shadow: none;" @click="save()">Guardar</ion-button>
-                    </ion-buttons>
-                </ion-toolbar>
-
-                <ion-list style="margin-top:50px; padding:20px; background:transparent;">
-
-                    <ion-title style="margin-bottom:15px;">
-                        Agendar Actividad
-                    </ion-title>
-
-                    <ion-item>
-                        <ion-label position="fixed" style="font-size:14px; filter:opacity(.7);">
-                            <ion-icon style="margin-right:10px;" :icon="calendarClearOutline"></ion-icon>
-                            Fecha
-                        </ion-label>
-                        <ion-input id="date-click-trigger" v-bind:v-model="activity.date"></ion-input>
-                        <ion-popover trigger="date-click-trigger" trigger-action="click">
-                            <ion-datetime @ionChange="saveDate($event.detail.value)" presentation="date"></ion-datetime>
-                        </ion-popover>
-                    </ion-item>
-
-                    <ion-item>
-                        <ion-label position="fixed" style="font-size:14px; filter:opacity(.7);">
-                            <ion-icon style="margin-right:10px;" :icon="timeOutline"></ion-icon>
-                            Hora
-                        </ion-label>
-                        <ion-input id="hour-click-trigger" v-bind:v-model="activity.hour"></ion-input>
-                        <ion-popover trigger="hour-click-trigger" trigger-action="click">
-                            <ion-datetime @ionChange="saveHour($event.detail.value)" presentation="time"></ion-datetime>
-                        </ion-popover>
-                    </ion-item>
-
-                    <ion-item>
-                        <ion-label position="fixed" style="font-size:14px; filter:opacity(.7);">
-                            <ion-icon style="margin-right:10px;" :icon="businessOutline"></ion-icon>
-                            Cliente
-                        </ion-label>
-                        <ion-input type="text" v-bind:v-model="activity.client_id"></ion-input>
-                    </ion-item>
-
-                    <ion-item>
-                        <ion-label position="fixed" style="font-size:14px; filter:opacity(.7);">
-                            <ion-icon style="margin-right:10px;" :icon="personOutline"></ion-icon>
-                            Contacto
-                        </ion-label>
-                        <ion-input type="text" v-bind:v-model="activity.contact_id"></ion-input>
-                    </ion-item>
-
-                    <ion-item>
-                        <ion-label position="fixed" style="font-size:14px; filter:opacity(.7);">
-                            <ion-icon style="margin-right:10px;"></ion-icon>
-                            Actividad
-                        </ion-label>
-                        <ion-select v-bind:v-model="activity.activity_id">
-                            <ion-select-option v-for="(type, index) in activityTypes" :key="index">
-                                    {{type.type}}
-                            </ion-select-option>
-                        </ion-select>
-                    </ion-item>
-
-                    <ion-item>
-                        <ion-label position="floating" style="font-size:14px; filter:opacity(.7);">
-                            <ion-icon style="margin-right:10px;"></ion-icon>
-                            Descripción
-                        </ion-label>
-                        <ion-textarea type="text" v-bind:v-model="activity.description"></ion-textarea>
-                    </ion-item>
-
-                </ion-list>
-
-            </ion-content>
+            <create/>
         </ion-modal>
 
         <!-- detail modal -->
@@ -183,21 +108,24 @@
                         </ion-buttons>
                 </ion-toolbar>
 
+                
+
                 <ion-list style="margin-top:50px; padding:20px; background:transparent;">
-                    <ion-title v-if="selected_event.company!=undefined">
-                        {{selected_event.company.attributes.name}} | {{selected_event.contact.name + ' ' + selected_event.contact.last}}
+
+                    <ion-title v-if="selected_event.subject!=undefined">
+                        {{selected_event.subject.legal_name}}
                     </ion-title>
                     <ion-title style="font-size:15px; filter:opacity(.6);margin: 10px 0px 5px 0px;">
-                        {{dateFormat(selected_event.date.slice(0,10))}}
+                        {{dateFormat(selected_event.only_date)}}
                     </ion-title>
                     <ion-title style="font-size:15px; filter:opacity(.6);">
-                        {{hourFormat(selected_event.date.slice(11,16))}}
+                        {{hourFormat(selected_event.only_time)}}
                     </ion-title>
 
                     <ion-title style="font-size:15px; margin:20px 0px;">
                         Tipo de Actividad:
-                        <div :style="'background:' + selected_event.activity_type.color + '; font-size: 12px; border-radius: 4px; margin-left:10px; display: inline-block; padding: 4px 10px; font-weight: 600;'">
-                            {{selected_event.activity_type.name}}
+                        <div :style="'font-size: 12px; border-radius: 4px; margin-left:10px; display: inline-block; padding: 4px 10px; font-weight: 600;'" class="event-calendar">
+                            {{selected_event.type}}
                         </div>
                     </ion-title>
 
@@ -207,14 +135,14 @@
                         {{selected_event.description}}
                     </div>
 
-                    <ion-title style="font-size:15px; margin:20px 0px;">
+                    <!--ion-title style="font-size:15px; margin:20px 0px;">
                         Agente:
                         <span style="filter:opacity(.8);">{{selected_event.user.name + ' ' + selected_event.user.last}}</span>
                     </ion-title>
                     <ion-title style="font-size:15px; margin:10px 0px;">
                         Creación:
                         <span style="filter:opacity(.8);">{{dateFormat(new Date(selected_event.created_at).toLocaleString("sv-SE", {timeZone: "America/Monterrey"}).slice(0,10))}}</span>
-                    </ion-title>
+                    </ion-title-->
 
                 </ion-list>
 
@@ -227,23 +155,15 @@
 <script lang="ts">
 import { useStore } from 'vuex';
 import { defineComponent, ref, computed } from 'vue';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonSelect, IonSelectOption, IonModal, IonPopover, IonDatetime, IonInput, IonTextarea } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonSelect, IonSelectOption, IonModal, IonPopover, IonDatetime, IonInput, IonTextarea, IonSearchbar, IonItem, IonLabel, IonNote } from '@ionic/vue';
 import { chevronForwardOutline, chevronBackOutline, calendarOutline, addOutline, arrowBack, ellipsisHorizontalSharp, calendarClearOutline, timeOutline, businessOutline, personOutline } from 'ionicons/icons';
+ import create from '../calendar/create.vue';
  export default defineComponent({
     name: 'Calendar',
-    components: { IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonSelect, IonSelectOption, IonModal, IonPopover, IonDatetime, IonInput, IonTextarea },
+    components: { create, IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonSelect, IonSelectOption, IonModal, IonPopover, IonDatetime, IonInput, IonTextarea, IonSearchbar, IonItem, IonLabel, IonNote },
     data() {
         return {
             detailModal:false,
-            activity:{
-                date: new Date().toLocaleString("sv-SE", {timeZone: "America/Monterrey"}).slice(0,10) as string,
-                client_id: '' as string,
-                contact_id: '' as string,
-                hour: '00:00' as string,
-                note: '' as string,
-                description: '' as string,
-                activity_id: '' as string,
-            },
             isModalOpen: false,
             showCalendar: true,
             currentDate: new Date() as any,
@@ -350,9 +270,6 @@ import { chevronForwardOutline, chevronBackOutline, calendarOutline, addOutline,
             }
             return this.events.filter((event: Event)=>event.only_date==new Date(date).toLocaleString("sv-SE", {timeZone: "America/Monterrey"}).slice(0,10),)
         },
-        save(){
-            
-        },
         saveDate(value:any){
             this.activity.date = value.slice(0,10)
         },
@@ -418,7 +335,7 @@ import { chevronForwardOutline, chevronBackOutline, calendarOutline, addOutline,
         return { store, device, chevronForwardOutline, chevronBackOutline, calendarOutline, addOutline, arrowBack, ellipsisHorizontalSharp, calendarClearOutline, timeOutline, businessOutline, personOutline }
     },
     created(){
-        this.store.dispatch('activity/getActivityTypes')
+        //this.store.dispatch('activity/getActivityTypes')
     }
 });
 </script>
@@ -487,7 +404,6 @@ import { chevronForwardOutline, chevronBackOutline, calendarOutline, addOutline,
         margin-bottom:2px;
         border-radius:3px; 
         padding: 1px 5px; 
-        color:white!important; 
         font-size:12px;
         overflow: hidden;
         text-overflow: ellipsis;

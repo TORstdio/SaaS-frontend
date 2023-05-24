@@ -1,5 +1,5 @@
 <template>
-  <ion-page>
+  <ion-page class="bg">
     <div>Dashboard</div>
   </ion-page>
 </template>

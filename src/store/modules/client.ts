@@ -60,7 +60,7 @@ const actions: ActionTree<State, RootState> = {
         }
         state.loader = true
         const apiUrl = import.meta.env.VITE_BACKEND_ROUTE;
-        axios.get(apiUrl + "api/v2/companies" + link).then(response => {
+        axios.get(apiUrl + "api/v1/clients" + link).then(response => {
             commit('setClients', response.data)
         }).catch(error=>{
             

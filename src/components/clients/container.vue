@@ -1,5 +1,5 @@
 <template>
-  <ion-page style="display: block;">
+  <ion-page style="display: block;" class="bg">
     <ion-grid style="padding:0px;">
       <ion-row>
         <Transition name="fade">
@@ -40,9 +40,9 @@
           </div>
 
           <div v-if="selected_client!=null">
-
+            {{selected_client}}
           </div>
-          <div else style="background-image:url('/icon.svg'); height:calc(100vh - 56px)!important; background-repeat:no-repeat; background-position: center;" class="logo">
+          <div v-else style="background-image:url('/icon.svg'); height:calc(100vh - 56px)!important; background-repeat:no-repeat; background-position: center;" class="logo">
 
           </div>
           <!-- Contenido de la segunda columna -->

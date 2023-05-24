@@ -121,13 +121,25 @@ th, .footer-table{
   background:#f5f6f7;
 }
 .event-calendar{
-  background-color:#e0e0e0;
+  background-color:#e0e0e0!important;
+}
+.autocomplete ion-item{
+  --background: #f5f6f7;
+}
+.bg{
+  background-color: #ffffff;
 }
 
 
 @media (prefers-color-scheme: dark) {
+  .bg{
+    background-color: #121212;
+  }
+  .autocomplete ion-item{
+    --background: #313233;
+  }
   .event-calendar{
-    background-color: #313233;
+    background-color: #313233!important;
   }
   td, th, .border-calendar{
     border-color:#2d2d2d!important;

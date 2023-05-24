@@ -1,5 +1,5 @@
 <template>
-  <ion-page>
+  <ion-page class="bg">
     <ion-content class="table-responsive">
       <div class="table">
         <!-- Table Header -->
