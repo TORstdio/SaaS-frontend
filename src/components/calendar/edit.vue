@@ -5,14 +5,14 @@
                 <ion-button @click="closeModal()">
                     <ion-icon :icon="arrowBack"></ion-icon>
                 </ion-button>
-            </ion-buttons>
-            <ion-buttons slot="end" style="padding-right:15px;">
+                </ion-buttons>
+                <ion-buttons slot="end" style="padding-right:15px;">
                 <ion-button :disabled="diable_save_button" expand="block" style="text-transform: capitalize; --box-shadow: none;" @click="save()">Guardar</ion-button>
             </ion-buttons>
         </ion-toolbar>
         <ion-list style="margin-top:50px; padding:20px; background:transparent; height: 100%;">
             <ion-title style="margin-bottom:15px;">
-                Agendar Actividad
+                Editar Actividad
             </ion-title>
 
             <ion-item>
@@ -60,18 +60,6 @@
                             <!--span v-if="client.type!=undefined">{{client.type}}</span-->
                         </ion-note>
                     </ion-item>
-
-                    <ion-item v-if="entries.clients.length==0 && search_client_active && searchClients!=''">
-                        <ion-label>
-                             
-                            <ion-buttons slot="end" style="padding-right:15px;">
-                                <span style="margin-right:30px;">No existen resultados relacionados </span>
-                                <ion-button style="text-transform: capitalize;" @click="clientModal=true">Crear Cliente</ion-button>
-                                <ion-button style="text-transform: capitalize;" @click="leadModal=true">Crear Lead</ion-button>
-                            </ion-buttons>
-                        </ion-label>
-                    </ion-item>
-
                 </ion-list>
             </div>
             <!--ion-item>
@@ -93,16 +81,6 @@
                 <ion-textarea type="text" v-model="activity.description"></ion-textarea>
             </ion-item>
         </ion-list>
-
-        <!-- client modal -->
-        <ion-modal :is-open="clientModal" @didDismiss="clientModal = false">
-            <createClient v-bind:legal_name="searchClients" @closeCreateClientModal="closeCreateClientModal"/>
-        </ion-modal>
-
-        <!-- lead modal -->
-        <ion-modal :is-open="leadModal" @didDismiss="leadModal = false">
-            <createLead v-bind:name="searchClients" @closeCreateLeadModal="closeCreateLeadModal"/>
-        </ion-modal>
     </ion-content>
 </template>
 
@@ -111,13 +89,10 @@ import { useStore } from 'vuex';
 import { defineComponent } from 'vue';
 import { IonProgressBar, IonDatetime, IonPopover, IonButtons, IonButton, IonTextarea, IonInput, IonContent, IonList, IonIcon, IonSelect, IonSelectOption, IonSearchbar, IonItem, IonLabel, IonNote } from "@ionic/vue";
 import { arrowBack, calendarClearOutline, timeOutline, businessOutline } from 'ionicons/icons';
-import createClient from "../clients/create.vue"
-import createLead from "../leads/create.vue"
+
 import axios from "axios";
     export default defineComponent({
     components: {
-        createClient,
-        createLead,
         IonSearchbar,
         IonItem,
         IonLabel,
@@ -135,26 +110,21 @@ import axios from "axios";
         IonButton,
         IonTextarea
     },
+    props:{
+        activity: {
+            type: Object,
+            default: null
+        }
+    },
     data() {
         return {
-            clientModal: false,
-            leadModal: false,
             diable_save_button:false,
             search_client_active: false,
             searchClients: "",
             companies: [],
-            activity:{
-                only_date: new Date().toLocaleString("sv-SE", {timeZone: "America/Monterrey"}).slice(0,10) as string,
-                only_time: '00:00' as string,
-                description: '' as string,
-                type: '' as string,
-                subject_type: '' as string,
-                subject_id: '' as string,
-                date:'' as string
-            },
             isLoadingClients: false,
             entries:{
-                clients:[] as { legal_name: string, id: string }[]
+                clients:[] as { legal_name: string, id: number }[]
             }
         };
     },
@@ -167,6 +137,10 @@ import axios from "axios";
         activityTypes(){
             return this.store.state.catalogs.activities
         }
+    },
+    created(){
+        this.entries.clients.push(this.activity.subject)
+        this.searchClients = this.activity.subject.legal_name
     },
     watch:{
         searchClients(val){
@@ -183,18 +157,10 @@ import axios from "axios";
         },
     },
     methods: {
-        closeCreateClientModal: function(prop:any){
-            this.clientModal = false
-            this.entries.clients.push(prop)
-        },
-        closeCreateLeadModal: function(prop:any){
-            this.leadModal = false
-            this.entries.clients.push(prop)
-        },
         async save(): Promise<void> {
             this.diable_save_button = true
             this.activity.date = this.activity.only_date + ' ' + this.activity.only_time
-            await this.store.dispatch('activity/createActivity', this.activity).then((response:boolean)=>{
+            await this.store.dispatch('activity/modifyActivity', this.activity).then((response:boolean)=>{
                 if(response){
                     this.closeModal()
                 }else{
@@ -203,17 +169,8 @@ import axios from "axios";
             })
         },
         closeModal(){
-            this.activity = {
-                only_date: new Date().toLocaleString("sv-SE", {timeZone: "America/Monterrey"}).slice(0,10) as string,
-                only_time: '00:00' as string,
-                description: '' as string,
-                type: '' as string,
-                subject_type: '' as string,
-                subject_id: '' as string,
-                date: '' as string
-            }
             this.diable_save_button = false
-            this.$emit("closeCreateModal", false);
+            this.$emit("closeEditModal", this.activity);
         },
         saveDate(value:any){
             this.activity.only_date = value.slice(0,10)

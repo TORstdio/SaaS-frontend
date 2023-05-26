@@ -24,7 +24,9 @@
     "axios": "^1.4.0",
     "ionicons": "^7.0.0",
     "vue": "^3.2.45",
+    "vue-horizontal": "^1.0.2",
     "vue-router": "^4.1.6",
+    "vuedraggable": "^4.1.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

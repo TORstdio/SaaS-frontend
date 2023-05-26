@@ -64,29 +64,45 @@ const actions: ActionTree<State, RootState> = {
         //})
     },
     login({ state }: ActionContext<State, RootState>, user) {
-        console.log(user)
         state.loader = true
         const apiUrl = import.meta.env.VITE_BACKEND_ROUTE;
         return new Promise((resolve, reject) => {
             axios.post(apiUrl + "api/v1/user/login", {email:user.email, password:user.password}).then((response: { data: { access_token: string } }) => {
                 var token = response.data.access_token
-                /*console.log(token)
+                
                 if(user.remember){
-                    localStorage.setItem("remember_user", JSON.stringify(user));
-                }else{
-                    localStorage.removeItem("remember_user")
-                }
-                localStorage.setItem("token", response.data.token);*/
-                const ionicStorage = new Storage();
-                ionicStorage.create().then(()=>{
-                    ionicStorage.set('token', token).then(()=>{
-                        resolve(true)
+                    const ionicStorage = new Storage();
+                    ionicStorage.create().then(()=>{
+                        ionicStorage.set('remember_user', JSON.stringify(user)).then(()=>{
+                            ionicStorage.set('token', token).then(()=>{
+                                store.commit('snackbar/setSnackbar', {
+                                    message: '',
+                                    color: '',
+                                    show: false
+                                });
+                                resolve(true)
+                            })
+                        })
                     })
-                })
+                }else{
+                    const ionicStorage = new Storage();
+                    ionicStorage.create().then(()=>{
+                        ionicStorage.remove('remember_user')
+                        ionicStorage.set('token', token).then(()=>{
+                            store.commit('snackbar/setSnackbar', {
+                                message: '',
+                                color: '',
+                                show: false
+                            });
+                            resolve(true)
+                        })
+                    })
+                }
+
             }).catch(error=>{
                 store.commit('snackbar/setSnackbar', {
-                    message: error.response.data.error,
-                    color: 'error',
+                    message: 'Usuario y/o contraseña invalidos',
+                    color: 'danger',
                     show: true
                 });
                 state.loader = false
@@ -109,7 +125,7 @@ const actions: ActionTree<State, RootState> = {
             }).catch(error=>{
                 store.commit('snackbar/setSnackbar', {
                     message: error.response.data.error,
-                    color: 'error',
+                    color: 'danger',
                     show: true
                 });
                 state.image_loader = false
@@ -141,7 +157,7 @@ const actions: ActionTree<State, RootState> = {
             }).catch(error=>{
                 store.commit('snackbar/setSnackbar', {
                     message: error.message,
-                    color: 'error',
+                    color: 'danger',
                     show: true
                 });
                 state.loader = false
@@ -162,7 +178,7 @@ const actions: ActionTree<State, RootState> = {
             }).catch(error=>{
                 store.commit('snackbar/setSnackbar', {
                     message: error.message,
-                    color: 'error',
+                    color: 'danger',
                     show: true
                 });
                 state.loader = false

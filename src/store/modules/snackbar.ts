@@ -30,6 +30,13 @@ const snackbar: SnackbarModule = {
   mutations: {
     setSnackbar(state, data) {
       state.info = data;
+      setTimeout(() => {
+        state.info = {
+          color: '',
+          show: false,
+          message: ''
+        }; 
+      }, 2000);
     },
     setSplitPane(state, data) {
       state.show_split_pane = data;

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
+import store from '@/store';
 
 interface RootState {
     snackbar: {
@@ -35,7 +36,7 @@ interface State {
     activities: Array<object>
     types: Array<object>
     loader: boolean
-    meta: object
+    meta: any
 }
 
 const state: State = {
@@ -69,7 +70,6 @@ const actions: ActionTree<State, RootState> = {
         state.loader = true
         const apiUrl = import.meta.env.VITE_BACKEND_ROUTE;
         axios.get(apiUrl + "api/v1/activities" + link).then(response => {
-            console.log(response)
             commit('setActivities', response.data)
         }).catch(error=>{
             
@@ -83,12 +83,62 @@ const actions: ActionTree<State, RootState> = {
             
         })
     },
-    postAnctivity({ commit }: ActionContext<State, RootState>, activity: Activity) {
+    createActivity({ commit }: ActionContext<State, RootState>, activity: Activity) {
         const apiUrl = import.meta.env.VITE_BACKEND_ROUTE;
-        axios.post(apiUrl + 'api/v1/activity', activity).then(response=>{
-            commit('addActivity', activity)
+        return new Promise((resolve, reject) => {
+            axios.post(apiUrl + 'api/v1/activities', activity).then(response=>{
+                commit('addActivity', activity)
+                resolve(true)
+            }).catch(error=>{
+                store.commit('snackbar/setSnackbar', {
+                    message: error.data,
+                    color: 'danger',
+                    show: true
+                });
+            })
         })
-    }
+    },
+    deleteActivity({ commit }: ActionContext<State, RootState>, id: any) {
+        console.log(id)
+        const apiUrl = import.meta.env.VITE_BACKEND_ROUTE;
+        return new Promise((resolve, reject) => {
+            axios.delete(apiUrl + 'api/v1/activities/' + id).then(response=>{
+                commit('removeActivity', id)
+                store.commit('snackbar/setSnackbar', {
+                    message: 'La actividad ha sido eliminada con éxito',
+                    color: 'success',
+                    show: true
+                });
+                resolve(true)
+            }).catch(error=>{
+                store.commit('snackbar/setSnackbar', {
+                    message: error.data,
+                    color: 'danger',
+                    show: true
+                });
+            })
+        })
+    },
+    modifyActivity({ commit }: ActionContext<State, RootState>, activity: any) {
+        const apiUrl = import.meta.env.VITE_BACKEND_ROUTE;
+        return new Promise((resolve, reject) => {
+            axios.patch(apiUrl + 'api/v1/activities/' + activity.id, activity).then(response=>{
+                commit('replaceActivity', activity)
+                store.commit('snackbar/setSnackbar', {
+                    message: 'La actividad se ha modificado con éxito',
+                    color: 'success',
+                    show: true
+                });
+                resolve(true)
+            }).catch(error=>{
+                store.commit('snackbar/setSnackbar', {
+                    message: error.data,
+                    color: 'danger',
+                    show: true
+                });
+            })
+        })
+    },
 };
 
 const mutations: MutationTree<State> = {
@@ -102,7 +152,15 @@ const mutations: MutationTree<State> = {
     },
     setActivityTypes(state, data){
         state.types = data
-    }
+    },
+    removeActivity(state, data){
+        state.activities = state.activities.filter((activity : any)=>activity.id != data)
+        //state.meta.total = data.meta.total - 1
+    },
+    replaceActivity(state, data){
+        const index = state.activities.indexOf(state.activities.filter((activity : any)=>activity.id == data.id)[0])
+        state.activities[index] = data
+    },
 };
   
 export default{

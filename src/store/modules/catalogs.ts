@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex'
+import store from '@/store';
 
 interface RootState {
     snackbar: {
@@ -17,7 +18,7 @@ interface Sort {
 }
 
 interface Filters {
-    search_value: string
+    date: string
 }
 
 interface Options {
@@ -27,62 +28,55 @@ interface Options {
     filters: Filters
 }
 
-interface Sale{
-    sale: object
-}
-
 interface State {
-    sales: Array<object>
+    activities: Array<object>
+    types: Array<object>
     loader: boolean
     meta: object
 }
 
 const state: State = {
-    sales: [],
+    activities: [],
     loader: false,
     meta: {},
+    types:[]
 };
 
 const getters: GetterTree<State, RootState> = {};
 
 const actions: ActionTree<State, RootState> = {
-    getSales({ commit, state }: ActionContext<State, RootState>, options: Options) {
+    getActivities({ commit, state }: ActionContext<State, RootState>, options: Options) {
         var link = ''
-        link = "?page=" + options.page + "&itemsPerPage=" + options.items_per_page
+        if(options.page!=undefined){
+            link = "?page=" + options.page
+        }
+        if(options.items_per_page!=undefined){
+            link = link + "&itemsPerPage=" + options.items_per_page
+        }
         if(options.sort.sort==true){
             link = "&sort=" + options.sort.value
         }else if(options.sort.sort==false){
             link = "&sort=-" + options.sort.value
         }
-        if(options.filters.search_value!=undefined){
-            link = '&' + link + 'filter[name]=' + options.filters.search_value
+        if(options.filters!=undefined){
+            if(options.filters.date!=undefined){
+                link = link + '?filter[date_between]=' + options.filters.date
+            }
         }
         state.loader = true
         const apiUrl = import.meta.env.VITE_BACKEND_ROUTE;
-
-        axios.get(apiUrl + "api/v1/sales" + link).then(response => {
-            commit('setSales', response.data)
+        axios.get(apiUrl + "api/v1/catalogs" + link).then(response => {
+            commit('setCatalogs', response.data)
         }).catch(error=>{
             
         })
     },
-    postSales({ commit }: ActionContext<State, RootState>, sale: Sale) {
-        const apiUrl = import.meta.env.VITE_BACKEND_ROUTE;
-        axios.post(apiUrl + 'api/v1/sales', sale).then(response=>{
-            commit('addSale', sale)
-        })
-    }
 };
 
 const mutations: MutationTree<State> = {
-    setSales(state, data) {
-        state.sales = data.data;
-        state.meta = data.meta
-        state.loader = false;
+    setCatalogs(state, data) {
+        state.activities = data.data;
     },
-    addSale(state, data){
-        state.sales.push(data)
-    }
 };
   
 export default{

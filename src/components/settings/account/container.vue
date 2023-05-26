@@ -1,9 +1,10 @@
 <template>
+  <ion-page class="bg">
     <div class="container">
         <ion-avatar ><!--@click="selectImage"-->
           <img src="https://ionicframework.com/docs/img/demos/avatar.svg" />
         </ion-avatar>
-        <ion-card style="border-radius:10px;" class="card-bg">
+        <ion-card style="border-radius:10px; width:90%;" class="card-bg">
             <ion-card-content>
                 <!-- Formulario de inicio de sesión -->
                 <ion-item>
@@ -26,26 +27,32 @@
                 </ion-item>
             </ion-card-content>
         </ion-card>
-        <div class="logout">
+        <div class="actions">
           <ion-button @click="save()" expand="block" style="font-size:13px; text-transform: capitalize; --box-shadow: none; margin-bottom:15px;">Guardar Cambios</ion-button>
-          <ion-label class="ion-text-center" style="font-size:12px; color:#3a82f7; cursor: pointer;" @click="logout">Cerrar sesión</ion-label>
+
+          <ion-button @click="logout()" expand="block" style="text-transform: capitalize; --box-shadow: none; margin-bottom:15px; --background: transparent;">
+            <ion-icon style="font-size:12px; margin-right:10px;" :icon="power" slot="start"></ion-icon>
+            <ion-label style="font-size:12px;">Cerrar Sesión</ion-label>
+          </ion-button>
+
         </div>
     </div>
-
+  </ion-page>
 </template>
 
 <script lang="ts">
-import { IonContent, IonImg, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem, IonInput } from '@ionic/vue';
-import { logoGoogle, logoApple } from 'ionicons/icons';
+import { IonPage, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem, IonInput } from '@ionic/vue';
+import { power } from 'ionicons/icons';
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 
-export default defineComponent({
-    components: { IonContent, IonImg, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem, IonInput},
+  export default defineComponent({
+    name: 'Account',
+    components: { IonPage, IonLabel, IonButton, IonIcon, IonCard, IonCardContent, IonItem, IonInput},
     setup(){
       const store = useStore();
       //let selectedImage: File | null = null;
-      return { logoGoogle, logoApple, store }
+      return { store, power }
     },
     data(){return{
       password:'',
@@ -63,25 +70,6 @@ export default defineComponent({
       logout(){
         this.store.dispatch('user/logout')
       },
-      /*async selectImage() {
-        const imagePicker = await Filesystem.getUri({
-          directory: Directory.Pictures,
-          allowMultiple: false,
-          filePickerHandlerStyle: FilePickerHandlerStyle.Picker,
-          promptLabelHeader: 'Seleccionar imagen',
-          promptLabelCancelButton: 'Cancelar',
-          promptLabelCaptureButton: 'Capturar foto',
-          promptLabelAlbumButton: 'Elegir de la galería',
-        });
-
-        if (imagePicker && imagePicker.uri) {
-          const file = await Filesystem.readFile({
-            path: imagePicker.uri,
-          });
-          this.selectedImage = file;
-          //this.currentUser.profile_photo_url = URL.createObjectURL(file);
-        }
-      },*/
     }
 })
 
@@ -93,48 +81,7 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 100px);
+  height: 80vh;
 }
 
-.logo {
-  margin-bottom: 1rem;
-}
-
-ion-card {
-  max-width: 600px;
-  width: 90%;
-  box-shadow: none;
-}
-
-.forgot-password {
-  --ion-item-padding-end: 0;
-}
-
-.social-login,
-.register {
-  margin-top: 1rem;
-}
-
-.logout {
-  position: fixed;
-  bottom: 1rem;
-  text-align: center;
-  width: 30%;
-}
-
-@media(max-width: 500px){
-  .logout {
-  width:90%;
-}
-    ion-card {
-        max-width: 100vw!important;
-        width: 90vw!important;
-        box-shadow: none;
-    }
-    .social-login ion-button{
-        margin:auto;
-        display: block;
-        margin-bottom:10px;
-    }
-}
 </style>

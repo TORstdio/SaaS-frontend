@@ -129,9 +129,15 @@ th, .footer-table{
 .bg{
   background-color: #ffffff;
 }
+.item-card-bg{
+  --background: #f5f6f7;
+}
 
 
 @media (prefers-color-scheme: dark) {
+  .item-card-bg{
+    --background: #1e1e1e;
+  }
   .bg{
     background-color: #121212;
   }

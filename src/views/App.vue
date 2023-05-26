@@ -34,48 +34,60 @@
               </ion-button>
             </ion-buttons>
 
-            <ion-searchbar class="search-bar" style="padding:0px!important;" placeholder="Buscar..."></ion-searchbar>
+            <ion-searchbar class="search-bar" style="padding:0px!important;" placeholder="Buscar...">
+              <!--ion-buttons slot="end">
+                <ion-button>
+                  <ion-icon :icon="filter"></ion-icon>
+                </ion-button>
+              </ion-buttons-->
+            </ion-searchbar>
 
-            <ion-chip style="margin-right:10px;" router-link="/account">
-              <ion-avatar>
+            <ion-chip style="margin-right:10px; padding-right:30px;" @click="settingsModal = true">
+              <ion-avatar style="min-width:25px;">
                 <img src="https://ionicframework.com/docs/img/demos/avatar.svg" />
               </ion-avatar>
               <ion-label>{{current_user.name}}</ion-label>
             </ion-chip>
           </div>
-
         </ion-toolbar>
       </ion-header>
       <ion-content>
         <ion-router-outlet/>
+        <!-- settings modal -->
+        <ion-modal class="modal-width" :is-open="settingsModal" @didDismiss="settingsModal = false">
+            <settings @closeSettingsModal="closeSettingsModal"/>
+        </ion-modal>
       </ion-content>
     </div>
   </ion-split-pane>
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonSearchbar, IonRouterOutlet, IonAvatar, IonChip } from '@ionic/vue';
+import {  IonModal, IonContent, IonHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonSearchbar, IonRouterOutlet, IonAvatar, IonChip } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import { menu, power, calendarOutline, cashOutline, peopleOutline, gridOutline } from 'ionicons/icons';
+import { chatbubblesOutline, filter, menu, power, calendarOutline, cashOutline, peopleOutline, gridOutline } from 'ionicons/icons';
 import { useStore } from 'vuex';
+import  settings  from '../components/settings/container.vue'
 
 export default defineComponent({
-  components: { IonContent, IonHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonSearchbar, IonRouterOutlet, IonAvatar, IonChip  },
+  components: { settings, IonModal, IonContent, IonHeader, IonMenu, IonSplitPane, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonList, IonItem, IonLabel, IonSearchbar, IonRouterOutlet, IonAvatar, IonChip  },
   setup() {
     const store = useStore();
     const device = window.innerWidth
-    return { menu, calendarOutline, power, device, cashOutline, peopleOutline, gridOutline, store};
+    return { filter, menu, calendarOutline, power, device, cashOutline, peopleOutline, gridOutline, store};
   },
   mounted(){
     this.store.dispatch('user/getCurrentUser')
   },
   data() {
     return {
+      settingsModal:false,
       menuOptions: [
         { label: 'Dashboard', icon: gridOutline, route: '' },
         { label: 'Clientes', icon: peopleOutline, route: 'clients' },
         { label: 'Calendario', icon: calendarOutline, route: 'calendar' },
         { label: 'Ventas', icon: cashOutline, route: 'sales' },
+        { label: 'Contacto', icon: chatbubblesOutline, route: 'contact' },
       ],
       show_split_pane: 'md' as string | boolean,
       divWidth: 'width:calc(100vw - 250px);',
@@ -103,6 +115,12 @@ export default defineComponent({
     },
   },
   methods: {
+    closeSettingsModal: function(param:boolean){
+      this.settingsModal = param
+    },
+    closeAlert(){
+
+    },
     logout(){
       this.store.dispatch('user/logout')
     },
@@ -132,6 +150,9 @@ export default defineComponent({
   .hide-desktop {
     display: none;
   }
+  .modal-width {
+    --width: 65vw!important;
+  }
 }
 @media (max-width: 768px) {
   .hide-mobile {
@@ -158,13 +179,12 @@ ion-searchbar {
   width: 100%;
 }
 .search-bar {
-  flex: 1;
-  margin: 0 10px;
   --border-radius: 6px !important;
 }
 .menu-element{
   margin:10px 20px 0px 20px; 
 }
+  
 
 </style>
 <style>

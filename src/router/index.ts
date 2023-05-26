@@ -19,8 +19,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../components/sales/container.vue')
   },
   {
-    path: '/account',
-    component: () => import('../components/account/container.vue')
+    path: '/leads',
+    component: () => import('../components/leads/container.vue')
+  },
+  {
+    path: '/contact',
+    component: () => import('../components/contact/container.vue')
   }
 ]
 

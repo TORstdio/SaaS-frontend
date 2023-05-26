@@ -93,16 +93,7 @@
                 <ion-textarea type="text" v-model="activity.description"></ion-textarea>
             </ion-item>
         </ion-list>
-
-        <!-- client modal -->
-        <ion-modal :is-open="clientModal" @didDismiss="clientModal = false">
-            <createClient v-bind:legal_name="searchClients" @closeCreateClientModal="closeCreateClientModal"/>
-        </ion-modal>
-
-        <!-- lead modal -->
-        <ion-modal :is-open="leadModal" @didDismiss="leadModal = false">
-            <createLead v-bind:name="searchClients" @closeCreateLeadModal="closeCreateLeadModal"/>
-        </ion-modal>
+        
     </ion-content>
 </template>
 
@@ -111,13 +102,9 @@ import { useStore } from 'vuex';
 import { defineComponent } from 'vue';
 import { IonProgressBar, IonDatetime, IonPopover, IonButtons, IonButton, IonTextarea, IonInput, IonContent, IonList, IonIcon, IonSelect, IonSelectOption, IonSearchbar, IonItem, IonLabel, IonNote } from "@ionic/vue";
 import { arrowBack, calendarClearOutline, timeOutline, businessOutline } from 'ionicons/icons';
-import createClient from "../clients/create.vue"
-import createLead from "../leads/create.vue"
 import axios from "axios";
     export default defineComponent({
     components: {
-        createClient,
-        createLead,
         IonSearchbar,
         IonItem,
         IonLabel,
@@ -183,14 +170,6 @@ import axios from "axios";
         },
     },
     methods: {
-        closeCreateClientModal: function(prop:any){
-            this.clientModal = false
-            this.entries.clients.push(prop)
-        },
-        closeCreateLeadModal: function(prop:any){
-            this.leadModal = false
-            this.entries.clients.push(prop)
-        },
         async save(): Promise<void> {
             this.diable_save_button = true
             this.activity.date = this.activity.only_date + ' ' + this.activity.only_time
