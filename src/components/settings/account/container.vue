@@ -7,16 +7,16 @@
         <ion-card style="border-radius:10px; width:90%;" class="card-bg">
             <ion-card-content>
                 <!-- Formulario de inicio de sesión -->
-                <ion-item>
+                <ion-item style="--background: transparent!important;">
                   <ion-label position="floating" style="font-size:14px;" class="login-text">Nombre</ion-label>
                   <ion-input type="text" v-model.trim="current_user.name"></ion-input>
                 </ion-item>
-                <ion-item>
+                <ion-item style="--background: transparent!important;">
                   <ion-label position="floating" style="font-size:14px;" class="login-text">Email</ion-label>
                   <ion-input type="text" v-model.trim="current_user.email"></ion-input>
                 </ion-item>
 
-                <ion-item v-if="modifyPassword">
+                <ion-item v-if="modifyPassword" style="--background: transparent!important;">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Contraseña</ion-label>
                     <ion-input type="password" v-model.trim="password"></ion-input>
                 </ion-item>
