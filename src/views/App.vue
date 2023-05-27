@@ -11,7 +11,7 @@
       </ion-header>
       <ion-content class="menu-bg">
         <ion-list style="background: transparent; margin-top:10px;">
-          <ion-item color="none" lines="none" v-for="(option, index) in menuOptions" :key="index" :href="`/${option.route}`" class="menu-element" :class="{ 'menu-item-selected': $route.path === `/${option.route}` }">
+          <ion-item color="none" lines="none" v-for="(option, index) in menuOptions" :key="index" :router-link="`/${option.route}`" class="menu-element" :class="{ 'menu-item-selected': $route.path === `/${option.route}` }">
             <ion-icon style="margin-right:15px;" :icon="option.icon" slot="start"></ion-icon>
             <ion-label style="font-size:14px;">{{ option.label }}</ion-label>
           </ion-item>
