@@ -26,7 +26,7 @@
         </div>
         <!-- Footer -->
         <div class="footer-table">
-          <ion-item style="max-width:250px!important; font-size:14px; margin-top:-5px;">
+          <ion-item color="none" style="max-width:250px!important; font-size:14px; margin-top:-5px;">
             <ion-label>Elementos por página:</ion-label>
             <ion-select v-model="options.items_per_page">
               <ion-select-option :value="15">15</ion-select-option>

@@ -17,7 +17,7 @@
           </ion-item>
         </ion-list>
       </ion-content>
-      <ion-item class="menu-bg" style="padding:10px; font-size:13px; cursor: pointer;" @click="logout">
+      <ion-item  color="none" class="menu-bg" style="padding:10px; font-size:13px; cursor: pointer;" @click="logout">
         <ion-icon style="font-size:16px; margin-right:15px;" :icon="power" slot="start"></ion-icon>
         <ion-label style="font-size:14px;">Cerrar Sesión</ion-label>
       </ion-item>

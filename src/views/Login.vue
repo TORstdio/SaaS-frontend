@@ -7,24 +7,24 @@
         <ion-card style="border-radius:10px;" class="card-bg">
             <ion-card-content>
                 <!-- Formulario de inicio de sesión -->
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Email</ion-label>
                     <ion-input @keydown.enter="login()" type="text" v-model="user.email"></ion-input>
                 </ion-item>
-                <ion-item v-if="!racoveryPassword">
+                <ion-item color="none" v-if="!racoveryPassword">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Contraseña</ion-label>
                     <ion-input @keydown.enter="login()" :type="showPassword ? 'text' : 'password'" v-model="user.password"></ion-input>
                     <ion-icon slot="end" style="font-size: 20px; margin-top: 30px;" :icon="showPassword ? eyeOff : eye" @click="togglePasswordVisibility" :class="{ 'ion-hide': !user.password }"></ion-icon>
                 </ion-item>
 
-                <ion-item lines="none" v-if="!racoveryPassword">
+                <ion-item color="none" lines="none" v-if="!racoveryPassword">
                     <ion-checkbox v-model="user.remember" label-placement="end" style="font-size:12px; width:150px; margin:auto;">Recordar Contraseña</ion-checkbox>
                 </ion-item>
 
-                <ion-item v-if="!racoveryPassword" lines="none" class="forgot-password">
+                <ion-item color="none" v-if="!racoveryPassword" lines="none" class="forgot-password">
                     <ion-label class="ion-text-center" @click="racoveryPassword=true" style="font-size:12px; color:#3a82f7; cursor:pointer!important;">¿Olvidaste tu contraseña?</ion-label>
                 </ion-item>
-                <ion-item v-else-if="racoveryPassword" lines="none" class="forgot-password">
+                <ion-item color="none" v-else-if="racoveryPassword" lines="none" class="forgot-password">
                     <ion-label class="ion-text-center" @click="racoveryPassword=false" style="font-size:12px; color:#3a82f7; cursor:pointer!important;">Iniciar Sesión</ion-label>
                 </ion-item>
                 <ion-button v-if="racoveryPassword" @click="racoverPassword()" expand="block" style="font-size:13px; text-transform: capitalize; --box-shadow: none; margin-top:20px;">Recuperar Contraseña</ion-button>

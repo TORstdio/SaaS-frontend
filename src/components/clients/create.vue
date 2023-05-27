@@ -17,16 +17,16 @@
 
             <ion-list style="padding:20px; background:transparent;">
           
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Nombre</ion-label>
                     <ion-input type="text" v-model="client.legal_name"></ion-input>
                 </ion-item>
 
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Email</ion-label>
                     <ion-input type="text" v-model="client.email"></ion-input>
                 </ion-item>
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Teléfono</ion-label>
                     <ion-input type="text" v-model="client.phone"></ion-input>
                 </ion-item>
@@ -40,53 +40,53 @@
             </div>
 
             <ion-list v-if="showFiscal" style="padding:20px; background:transparent;">
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Razon Social</ion-label>
                     <ion-input type="text" v-model="client.legal_name"></ion-input>
                 </ion-item>
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">RFC</ion-label>
                     <ion-input type="text" v-model="client.tax_id"></ion-input>
                 </ion-item>
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Régimen Fiscal</ion-label>
                     <ion-select v-model="client.tax_system">
                     <ion-select-option v-for="(system, index) in tax_systems" :key="index" :value="system.id">{{system.name}}</ion-select-option>
                     </ion-select>
                 </ion-item>
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">C.P.</ion-label>
                     <ion-input type="text" v-model="client.zip"></ion-input>
                 </ion-item>
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Calle</ion-label>
                     <ion-input type="text" v-model="client.street"></ion-input>
                 </ion-item>
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text"># Exterior</ion-label>
                     <ion-input type="text" v-model="client.exterior"></ion-input>
                 </ion-item>
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text"># Interior</ion-label>
                     <ion-input type="text" v-model="client.interior"></ion-input>
                 </ion-item>
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Colonia</ion-label>
                     <ion-input type="text" v-model="client.neighborhood"></ion-input>
                 </ion-item>
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Ciudad</ion-label>
                     <ion-input type="text" v-model="client.city"></ion-input>
                 </ion-item>
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Municipio</ion-label>
                     <ion-input type="text" v-model="client.municipality"></ion-input>
                 </ion-item>
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">Estado</ion-label>
                     <ion-input type="text" v-model="client.state"></ion-input>
                 </ion-item>
-                <ion-item>
+                <ion-item color="none">
                     <ion-label position="floating" style="font-size:14px;" class="login-text">País</ion-label>
                     <ion-input type="text" v-model="client.country"></ion-input>
                 </ion-item>

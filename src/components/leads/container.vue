@@ -2,14 +2,14 @@
     <ion-page class="bg">
         <!--vue-horizontal v-if="device >= 768" style="margin:20px; margin-bottom:0px;">
             <div v-for="(phase, index) in phases" v-bind:key="index">
-                <ion-item lines="none" style="width:250px; border-bottom:2px solid; margin:5px;" class="border-color item-card-bg" >
+                <ion-item color="none" lines="none" style="width:250px; border-bottom:2px solid; margin:5px;" class="border-color item-card-bg" >
                     <ion-label>{{phase.title}}</ion-label>
                     <ion-badge slot="end">{{phase.length}}</ion-badge>
                 </ion-item>
 
                 <draggable :options="delay_draggable" :list="items" group="people" @end="handleDragEnd" id="scroll" :class="'phase_id: ' + phase.id" :scroll-sensitivity="scroll_sensitivity">
                     <template #item="{element}">
-                        <ion-item style="margin:10px;" class="item-card-bg">
+                        <ion-item color="none" style="margin:10px;" class="item-card-bg">
                             <ion-avatar slot="start">
                                 <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
                             </ion-avatar>

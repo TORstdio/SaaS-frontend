@@ -2,7 +2,7 @@
   <ion-page class="bg">
       <ion-row>
         <ion-col v-if="device >= 768 || show==''" :size="device >= 768 ? '3' : '12'" class="border-calendar" style="border-right:1px solid; min-height:100vh; padding:0px;">
-          <ion-item>
+          <ion-item color="none">
             <ion-buttons slot="start" style="padding-left:5px;">
               <ion-button @click="closeModal()">
                 <ion-icon :icon="arrowBack"></ion-icon>

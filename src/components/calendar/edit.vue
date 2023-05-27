@@ -15,7 +15,7 @@
                 Editar Actividad
             </ion-title>
 
-            <ion-item>
+            <ion-item color="none">
                 <ion-label position="fixed" style="font-size:14px; filter:opacity(.7);">
                     <ion-icon style="margin-right:10px;" :icon="calendarClearOutline"></ion-icon>
                     Fecha
@@ -26,7 +26,7 @@
                 </ion-popover>
             </ion-item>
 
-            <ion-item>
+            <ion-item color="none">
                 <ion-label position="fixed" style="font-size:14px; filter:opacity(.7);">
                     <ion-icon style="margin-right:10px;" :icon="timeOutline"></ion-icon>
                     Hora
@@ -37,7 +37,7 @@
                 </ion-popover>
             </ion-item>
 
-            <ion-item>
+            <ion-item color="none">
                 <ion-label position="fixed" style="font-size:14px; filter:opacity(.7);">
                     <ion-icon style="margin-right:10px;" :icon="businessOutline"></ion-icon>
                     Cliente
@@ -48,7 +48,7 @@
             <div class="autocomplete" v-if="search_client_active">
                 <ion-progress-bar v-if="isLoadingClients" style="height:2px;" type="indeterminate"></ion-progress-bar>
                 <ion-list>
-                    <ion-item v-for="(client, index) in entries.clients" :key="index" @click="activity.subject_id = client.id, search_client_active = false, searchClients=client.legal_name, activity.subject_type = 'Client'">
+                    <ion-item color="none" v-for="(client, index) in entries.clients" :key="index" @click="activity.subject_id = client.id, search_client_active = false, searchClients=client.legal_name, activity.subject_type = 'Client'">
                         <ion-label>
                             {{ client.legal_name }}
                         </ion-label>
@@ -62,7 +62,7 @@
                     </ion-item>
                 </ion-list>
             </div>
-            <!--ion-item>
+            <!--ion-item color="none">
                 <ion-label position="fixed" style="font-size:14px; filter:opacity(.7);">
                     <ion-icon style="margin-right:10px;"></ion-icon>
                     Actividad
@@ -73,7 +73,7 @@
                     </ion-select-option>
                 </ion-select>
             </ion-item-->
-            <ion-item>
+            <ion-item color="none">
                 <ion-label position="fixed" style="font-size:14px; filter:opacity(.7);">
                     <ion-icon style="margin-right:10px;"></ion-icon>
                     Nota

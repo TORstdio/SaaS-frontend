@@ -49,7 +49,7 @@
                                     </div>
                                 </div>
 
-                                <div v-if="device<768 && eventsOfDay(date).length>0" style="border-radius:50%; height:10px; font-size:10px; width:10px; margin:10px auto;" class="event-calendar"></div>
+                                <div @click="selectDate(date)" v-if="device<768 && eventsOfDay(date).length>0" style="border-radius:50%; height:10px; font-size:10px; width:10px; margin:10px auto;" class="event-calendar"></div>
 
                                 <div @click="selectDate(date)" v-if="eventsOfDay(date).length>3 && device>=768" style="font-size:11px; font-weight:400; cursor: pointer; filter:opacity(0.5);">
                                     {{eventsOfDay(date).length-3}} más
@@ -72,7 +72,7 @@
                     </div>
                     <div style="width:calc(100% - 35px); padding:5px 0px 5px 15px; border-top:1px solid;" class="border-calendar">
                         <div v-for="(event, index) in eventsOfHour(hour)" :key="index">
-                            <div @click="openEvent(event)" class="eventChip" :style="'font-size:12px; border-radius:3px; padding: 1px 5px; color:white!important;'">
+                            <div @click="openEvent(event)" class="eventChip event-calendar" :style="'font-size:12px; border-radius:3px; padding: 1px 5px;'" >
                                 {{ event.date.slice(11,16) }}
                                 <strong v-if="event.subject!=undefined">{{ event.subject.legal_name }}</strong>
                             </div>
