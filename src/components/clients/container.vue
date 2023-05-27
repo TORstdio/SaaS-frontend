@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { IonPage, IonContent, IonRow, IonButton, IonButtons, IonSelect, IonSelectOption, IonIcon, IonItem, IonLabel,  } from '@ionic/vue';
+import { IonFab, IonFabButton, IonPage, IonContent, IonRow, IonButton, IonButtons, IonSelect, IonSelectOption, IonIcon, IonItem, IonLabel,  } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import { addOutline, chevronDownOutline, chevronUpOutline, chevronBackOutline, chevronForwardOutline } from 'ionicons/icons';
 import { useStore } from 'vuex';
@@ -73,7 +73,7 @@ import createClient from "../clients/create.vue"
 
 export default defineComponent({
   name: 'Sales',
-  components: { createClient, IonPage, IonContent, IonRow, IonButton, IonButtons, IonSelect, IonSelectOption, IonIcon, IonItem, IonLabel,  },
+  components: { IonFab, IonFabButton, createClient, IonPage, IonContent, IonRow, IonButton, IonButtons, IonSelect, IonSelectOption, IonIcon, IonItem, IonLabel,  },
   setup() {
     const store = useStore();
     return { addOutline, store, chevronDownOutline, chevronUpOutline, chevronBackOutline, chevronForwardOutline };

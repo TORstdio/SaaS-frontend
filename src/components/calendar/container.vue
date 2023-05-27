@@ -105,13 +105,13 @@
 <script lang="ts">
 import { useStore } from 'vuex';
 import { defineComponent, ref, computed } from 'vue';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonSelect, IonSelectOption, IonModal, IonPopover, IonDatetime, IonInput, IonTextarea, IonSearchbar, IonItem, IonLabel, IonNote } from '@ionic/vue';
+import { IonFab, IonFabButton, IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonSelect, IonSelectOption, IonModal, IonPopover, IonDatetime, IonInput, IonTextarea, IonSearchbar, IonItem, IonLabel, IonNote } from '@ionic/vue';
 import { chevronForwardOutline, chevronBackOutline, calendarOutline, addOutline, arrowBack, ellipsisHorizontalSharp, calendarClearOutline, timeOutline, businessOutline, personOutline } from 'ionicons/icons';
   import create from '../calendar/create.vue';
   import detail from '../calendar/detail.vue';
   export default defineComponent({
     name: 'Calendar',
-    components: { detail, create, IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonSelect, IonSelectOption, IonModal, IonPopover, IonDatetime, IonInput, IonTextarea, IonSearchbar, IonItem, IonLabel, IonNote },
+    components: { IonFab, IonFabButton, detail, create, IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonSelect, IonSelectOption, IonModal, IonPopover, IonDatetime, IonInput, IonTextarea, IonSearchbar, IonItem, IonLabel, IonNote },
     data() {
         return {
             detailModal:false,
